@@ -91,8 +91,18 @@ ALTER TABLE idea
 ADD FOREIGN KEY serviceID REFERENCES Service(serviceID),
 
 -- Pictures(pictureID, fileSize, serviceID, memberID)
+CREATE TABLE picture (
+    pictureID int not null primary key,
+    fileSize int,
+    serviceID int,
+    memberID int
+);
 -- foreign key: serviceID references Services(serviceID)
+ALTER TABLE picture
+ADD FOREIGN KEY (serviceID) REFERENCES service;
 -- foreign key: memberID references Members(memberID)
+ALTER TABLE picture
+ADD FOREIGN KEY (memberID) REFERENCES member;
 
 -- Events(eventID, name, eventDate, detail, serviceID, memberID))
 CREATE TABLE event (
