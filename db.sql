@@ -4,3 +4,6 @@ CREATE TABLE member
 	email varchar(30) not null,
 	password varchar(30) not null,
 	);
+
+
+#hello
