@@ -142,6 +142,45 @@ CREATE TABLE member (
 );
 
 
+-- Posts(postID,circleID, memberID, serviceID, postDate)
+-- foreign key: circleID references Circles(circleID)
+-- foreign key: memberID references Members(memberID)
+-- foreign key: serviceID references Services(serviceID)
+
+-- receives(messageID, memberID, receivedAt)
+-- foreign key: messageID references Messages(messageID)
+-- foreign key: memberID references Members(memberID)
+
+-- shares(interestID, memberID)
+-- foreign key: interestID references Interests(interestID)
+-- foreign key: memberID references Members(memberID)
+
+-- livestreams to(circleID, memberID, startTime)
+-- foreign key: circleID references Circles(circleID)
+-- foreign key: memberID references Members(memberID)
+
+-- is-part-of (groupID, memberID, joinDate)
+-- foreign key: groupID references Groups(groupID)
+-- foreign key: memberID references Members(memberID)
+
+-- contains(friendListID, memberID)
+-- foreign key: friendListID references FriendLists(friendListID)
+-- foreign key: memberID references Members(memberID)
+
+-- tagged-in(memberID, pictureID)
+-- foreign key: memberID references Members(memberID)
+-- foreign key: pictureID references Pictures(pictureID)
+
+-- attends(memberID, eventID)
+-- foreign key: memberID references Member(memberID)
+-- foreign key: eventID references Events(eventID)
+
+-- tagged-in(memberID, pictureID)
+-- foreign key: memberID references Members(memberID)
+-- foreign key: pictureID references Pictures(pictureID)
+
+
+
 
 
 
