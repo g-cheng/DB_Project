@@ -42,12 +42,22 @@ CREATE TABLE group (
 -- foreign key: memberID references Members(memberID)
 
 -- Videos(videoID, format, serviceID, memberID)
+CREATE TABLE video (
+    videoID int not null primary key,
+    format varchar(30)
+    serviceID int,
+    memberID int,
+    );
 -- foreign key: serviceID references Services(serviceID)
+ALTER TABLE video
+ADD FOREIGN KEY (serviceID) REFERENCES service;
 -- foreign key: memberID references Members(memberID)
+ALTER TABLE video 
+ADD FOREIGN KEY (memberID) REFERENCES member;
 
 -- Members(memberID, email, name, password)
-CREATE TABLE member
-    (memberID int not null primary key,
+CREATE TABLE member (
+    memberID int not null primary key,
     name varchar(30) not null,
     email varchar(30) not null,
     password varchar(30) not null,
