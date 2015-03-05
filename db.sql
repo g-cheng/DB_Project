@@ -1,12 +1,14 @@
 -- Messages(messageID, content, sendAt, memberID)
--- foreign key: memberID references Members(memberID)
-CREATE TABLE messages (
+CREATE TABLE message (
     messageID int not null primary key,
     content varchar(1000),
     sendAt TIMESTAMP,
     messageID int,
     FOREIGN KEY (memberID) REFERENCES Member(memberID)
 );
+-- foreign key: memberID references Members(memberID)
+ALTER TABLE instantMessage 
+ADD  FOREIGN KEY (message) REFERENCES Member(memberID);
 
 -- InstantMessages(imID, characterLength, messageID)
 -- foreign key: messageID references Messages(messageID)
@@ -16,15 +18,20 @@ CREATE TABLE instantMessage (
     messageID int,
     FOREIGN KEY (messageID) REFERENCES Messages(messageID)
 );
+ALTER TABLE instantMessage 
+ADD  FOREIGN KEY (messageID) REFERENCES Messages(messageID);
+
 
 -- Emails(emailID, priority, messageID)
--- foreign key: messageID references Messages(messageID)
 CREATE TABLE email(
     emailID int not null primary key,
     priority int,
-    messageID int,
-    FOREIGN KEY (messageID) REFERENCES Messages(messageID)
+    messageID int
 );
+-- foreign key: messageID references Messages(messageID)
+ALTER TABLE email 
+ADD  FOREIGN KEY (messageID) REFERENCES Messages(messageID);
+
 -- Interests(interestID, name, detail)
 CREATE TABLE interest(
     interestID int not null primary key,
@@ -33,7 +40,7 @@ CREATE TABLE interest(
 );
 
 -- Circles(circleID, creationDate)
-CREATE TABLE Circle (
+CREATE TABLE circle (
     circleID int not null primary key,
     creationDate date
 );
@@ -48,27 +55,40 @@ CREATE TABLE group (
 );
 
 -- FriendLists(friendListID, firstAddDate, circleID, memberID)
--- foreign key: circleID references Circles(circleID)
--- foreign key: memberID references Members(memberID)
 CREATE TABLE friendList (
     friendListID int not null primary key,
     firstAddDate TIMESTAMP,
     circleID int,
-    memberID int,
-    FOREIGN KEY (circleID) REFERENCES Circle(circleID),
-    FOREIGN KEY (memberID) REFERENCES Members(memberID)
+    memberID int
 );
+-- foreign key: circleID references Circles(circleID)
+ALTER TABLE friendList 
+ADD FOREIGN KEY (circleID) REFERENCES Circle(circleID);
+
+-- foreign key: memberID references Members(memberID)
+ALTER TABLE idea 
+ADD FOREIGN KEY (memberID) REFERENCES Members(memberID);
 
 -- Services(serviceID, creationDate)
-CREATE TABLE service(
+CREATE TABLE service (
     serviceID int not null primary key,
     creationDate TIMESTAMP
 );
 
 
 -- Ideas(ideaID, name, content, serviceID, memberID)
--- foreign key: serviceID references Services(serviceID)
+CREATE TABLE idea (
+    ideaID int not null primary key,
+    content varchar(1000),
+    serviceID int,
+    memberID int
+);
 -- foreign key: memberID references Members(memberID)
+ALTER TABLE idea 
+ADD FOREIGN KEY (memberID) REFERENCES member;
+-- foreign key: serviceID references Services(serviceID)
+ALTER TABLE idea 
+ADD FOREIGN KEY serviceID REFERENCES Service(serviceID),
 
 -- Pictures(pictureID, fileSize, serviceID, memberID)
 CREATE TABLE picture (
