@@ -2,24 +2,22 @@
 CREATE TABLE message (
     messageID int not null primary key,
     content varchar(1000),
-    sendAt TIMESTAMP,
-    messageID int,
-    FOREIGN KEY (memberID) REFERENCES Member(memberID)
+    sendAt timestamp,
+    messageID int
 );
 -- foreign key: memberID references Members(memberID)
 ALTER TABLE instantMessage 
-ADD  FOREIGN KEY (message) REFERENCES Member(memberID);
+ADD  FOREIGN KEY (message) REFERENCES member;
 
 -- InstantMessages(imID, characterLength, messageID)
 -- foreign key: messageID references Messages(messageID)
 CREATE TABLE instantMessage (
     imID int not null primary key,
     characterLength int,
-    messageID int,
-    FOREIGN KEY (messageID) REFERENCES Messages(messageID)
+    messageID int
 );
 ALTER TABLE instantMessage 
-ADD  FOREIGN KEY (messageID) REFERENCES Messages(messageID);
+ADD  FOREIGN KEY (messageID) REFERENCES message;
 
 
 -- Emails(emailID, priority, messageID)
@@ -30,7 +28,7 @@ CREATE TABLE email(
 );
 -- foreign key: messageID references Messages(messageID)
 ALTER TABLE email 
-ADD  FOREIGN KEY (messageID) REFERENCES Messages(messageID);
+ADD  FOREIGN KEY (messageID) REFERENCES message;
 
 -- Interests(interestID, name, detail)
 CREATE TABLE interest(
@@ -51,28 +49,28 @@ CREATE TABLE group (
     groupID int not null primary key,
     name varchar(30),
     circleID int,
-    FOREIGN KEY (circleID) REFERENCES Circle(circleID)
+    FOREIGN KEY (circleID) REFERENCES circle
 );
 
 -- FriendLists(friendListID, firstAddDate, circleID, memberID)
 CREATE TABLE friendList (
     friendListID int not null primary key,
-    firstAddDate TIMESTAMP,
+    firstAddDate timestamp,
     circleID int,
     memberID int
 );
 -- foreign key: circleID references Circles(circleID)
 ALTER TABLE friendList 
-ADD FOREIGN KEY (circleID) REFERENCES Circle(circleID);
+ADD FOREIGN KEY (circleID) REFERENCES circle;
 
 -- foreign key: memberID references Members(memberID)
 ALTER TABLE idea 
-ADD FOREIGN KEY (memberID) REFERENCES Member(memberID);
+ADD FOREIGN KEY (memberID) REFERENCES member;
 
 -- Services(serviceID, creationDate)
 CREATE TABLE service (
     serviceID int not null primary key,
-    creationDate TIMESTAMP
+    creationDate timestamp
 );
 
 
