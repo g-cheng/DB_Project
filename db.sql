@@ -154,42 +154,127 @@ ADD FOREIGN KEY (serviceID) REFERENCES service;
 ALTER TABLE video 
 ADD FOREIGN KEY (memberID) REFERENCES member;
 
+<<<<<<< HEAD
+=======
+-- Members(memberID, email, name, password)
+CREATE TABLE member (
+    memberID int not null primary key,
+    name varchar(30) not null,
+    email varchar(30) not null,
+    password varchar(30) not null
+);
+
+
+>>>>>>> 1b33cf4c5f31c359f72a14ace65eba17ab36a817
 -- Posts(postID,circleID, memberID, serviceID, postDate)
 -- foreign key: circleID references Circles(circleID)
 -- foreign key: memberID references Members(memberID)
 -- foreign key: serviceID references Services(serviceID)
+CREATE TABLE post (
+    postID int not null primary key,
+    circleID int,
+    memberID int,
+    serviceID int,
+    postDate timestamp
+);
+ALTER TABLE post
+    ADD FOREIGN KEY (circleID) REFERENCES circle;
+ALTER TABLE post
+    ADD FOREIGN KEY (memberID) REFERENCES member;
+ALTER TABLE post
+    ADD FOREIGN KEY (serviceID) REFERENCES service;
 
 -- receives(messageID, memberID, receivedAt)
 -- foreign key: messageID references Messages(messageID)
 -- foreign key: memberID references Members(memberID)
+CREATE TABLE receive (
+    messageID int not null primary key,
+    memberID int not null primary key,
+    receivedAt timestamp
+);
+ALTER TABLE receive
+    ADD FOREIGN KEY (messageID) REFERENCES message;
+ALTER TABLE receive
+    ADD FOREIGN KEY (memberID) REFERENCES member;
+
 
 -- shares(interestID, memberID)
 -- foreign key: interestID references Interests(interestID)
 -- foreign key: memberID references Members(memberID)
+CREATE TABLE share (
+    interestID int not null primary key,
+    memberID int not null primary key
+);
+ALTER TABLE share
+    ADD FOREIGN KEY (interestID) REFERENCES interest;
+ALTER TABLE share
+    ADD FOREIGN KEY (memberID) REFERENCES member;
+
 
 -- livestreams to(circleID, memberID, startTime)
 -- foreign key: circleID references Circles(circleID)
 -- foreign key: memberID references Members(memberID)
+CREATE TABLE livestream (
+    circleID int not null primary key,
+    memberID int not null primary key,
+    startTime timestamp
+);
+ALTER TABLE livestream
+    ADD FOREIGN KEY (circleID) REFERENCES circle;
+ALTER TABLE livestream
+    ADD FOREIGN KEY (memberID) REFERENCES member;
+
 
 -- is-part-of (groupID, memberID, joinDate)
 -- foreign key: groupID references Groups(groupID)
 -- foreign key: memberID references Members(memberID)
+CREATE TABLE partOf (
+    groupID int not null primary key,
+    memberID int not null primary key,
+    joinDate timestamp
+);
+ALTER TABLE partOf
+    ADD FOREIGN KEY (groupID) REFERENCES groupID;
+ALTER TABLE partOf
+    ADD FOREIGN KEY (memberID) REFERENCES member;
+
 
 -- contains(friendListID, memberID)
 -- foreign key: friendListID references FriendLists(friendListID)
 -- foreign key: memberID references Members(memberID)
+CREATE TABLE contains (
+    friendListID int not null primary key,
+    memberID int not null primary key
+);
+ALTER TABLE contains
+    ADD FOREIGN KEY (friendListID) REFERENCES friendList;
+ALTER TABLE contains
+    ADD FOREIGN KEY (memberID) REFERENCES member;
 
 -- tagged-in(memberID, pictureID)
 -- foreign key: memberID references Members(memberID)
 -- foreign key: pictureID references Pictures(pictureID)
+CREATE TABLE taggedIn (
+    memberID int not null primary key,
+    pictureID int not null primary key
+);
+ALTER TABLE taggedIn
+    ADD FOREIGN KEY (memberID) REFERENCES member;
+ALTER TABLE taggedIn
+    ADD FOREIGN KEY (pictureID) REFERENCES picture;
 
 -- attends(memberID, eventID)
 -- foreign key: memberID references Member(memberID)
 -- foreign key: eventID references Events(eventID)
+CREATE TABLE attends (
+    memberID int not null primary key,
+    eventID int not null primary key
+);
+ALTER TABLE attends
+    ADD FOREIGN KEY (memberID) REFERENCES member;
+ALTER TABLE attends
+    ADD FOREIGN KEY (eventID) REFERENCES event;
 
--- tagged-in(memberID, pictureID)
--- foreign key: memberID references Members(memberID)
--- foreign key: pictureID references Pictures(pictureID)
 
 
 
