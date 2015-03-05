@@ -2,12 +2,13 @@
 CREATE TABLE message (
     messageID int not null primary key,
     content varchar(1000),
-    sendAt timestamp,
-    messageID int
+    sentAt timestamp,
+    received timestamp,
+    senderID int,
 );
 -- foreign key: memberID references Members(memberID)
-ALTER TABLE instantMessage 
-ADD  FOREIGN KEY (message) REFERENCES member;
+ALTER TABLE message
+ADD  FOREIGN KEY (senderID) REFERENCES member;
 
 -- InstantMessages(imID, characterLength, messageID)
 -- foreign key: messageID references Messages(messageID)
