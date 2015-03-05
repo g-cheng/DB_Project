@@ -67,7 +67,7 @@ ADD FOREIGN KEY (circleID) REFERENCES Circle(circleID);
 
 -- foreign key: memberID references Members(memberID)
 ALTER TABLE idea 
-ADD FOREIGN KEY (memberID) REFERENCES Members(memberID);
+ADD FOREIGN KEY (memberID) REFERENCES Member(memberID);
 
 -- Services(serviceID, creationDate)
 CREATE TABLE service (
