@@ -95,16 +95,28 @@ ADD FOREIGN KEY serviceID REFERENCES Service(serviceID),
 -- foreign key: memberID references Members(memberID)
 
 -- Events(eventID, name, eventDate, detail, serviceID, memberID))
+CREATE TABLE event (
+    eventID int not null primary key,
+    name varchar(30),
+    eventDate date,
+    detail varchar(100),
+    serviceID int,
+    memberID int,
+);
 -- foreign key: serviceID references Services(serviceID)
+ALTER TABLE event
+ADD FOREIGN KEY (serviceID) REFERENCES service;
 -- foreign key: memberID references Members(memberID)
+ALTER TABLE event
+ADD FOREIGN KEY (memberID) REFERENCES member;
 
 -- Videos(videoID, format, serviceID, memberID)
 CREATE TABLE video (
     videoID int not null primary key,
-    format varchar(30)
+    format varchar(30),
     serviceID int,
     memberID int,
-    );
+);
 -- foreign key: serviceID references Services(serviceID)
 ALTER TABLE video
 ADD FOREIGN KEY (serviceID) REFERENCES service;
@@ -118,7 +130,7 @@ CREATE TABLE member (
     name varchar(30) not null,
     email varchar(30) not null,
     password varchar(30) not null,
-    );
+);
 
 
 
