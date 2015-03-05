@@ -1,15 +1,60 @@
-CREATE TABLE member
-	(memberID int not null primary key,
-	name varchar(30) not null,
-	email varchar(30) not null,
-	password varchar(30) not null,
-	);
+-- Messages(messageID, content, sendAt, memberID)
+-- foreign key: memberID references Members(memberID)
+
+-- InstantMessages(imID, characterLength, messageID)
+-- foreign key: messageID references Messages(messageID)
+
+-- Emails(emailID, priority, messageID)
+-- foreign key: messageID references Messages(messageID)
+
+-- Interests(interestID, name, detail)
+
+-- Circles(circleID, creationDate)
 
 
+-- Groups(groupID, name, circleID)
+-- foreign key: circleID references Circles(circleID)
 CREATE TABLE group (
     groupID int not null primary key,
-    name varchar(30)
+    name varchar(30),
+    circleID int,
+    FOREIGN KEY (circleID) REFERENCES Circles(circleID)
 );
 
 
-#hello
+
+-- FriendLists(friendListID, firstAddDate, circleID, memberID)
+-- foreign key: circleID references Circles(circleID)
+-- foreign key: memberID references Members(memberID)
+
+-- Services(serviceID, creationDate)
+
+-- Ideas(ideaID, name, content, serviceID, memberID)
+-- foreign key: serviceID references Services(serviceID)
+-- foreign key: memberID references Members(memberID)
+
+-- Pictures(pictureID, fileSize, serviceID, memberID)
+-- foreign key: serviceID references Services(serviceID)
+-- foreign key: memberID references Members(memberID)
+
+-- Events(eventID, name, eventDate, detail, serviceID, memberID))
+-- foreign key: serviceID references Services(serviceID)
+-- foreign key: memberID references Members(memberID)
+
+-- Videos(videoID, format, serviceID, memberID)
+-- foreign key: serviceID references Services(serviceID)
+-- foreign key: memberID references Members(memberID)
+
+-- Members(memberID, email, name, password)
+CREATE TABLE member
+    (memberID int not null primary key,
+    name varchar(30) not null,
+    email varchar(30) not null,
+    password varchar(30) not null,
+    );
+
+
+
+
+
+
