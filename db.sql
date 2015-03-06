@@ -95,7 +95,7 @@ CREATE TABLE picture (
     FOREIGN KEY (serviceID) REFERENCES service,
     FOREIGN KEY (memberID) REFERENCES member,
     serviceID int,
-    memberID int,
+    memberID int.
     fileSize int,
     url varchar(150)
 );
