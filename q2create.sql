@@ -221,6 +221,8 @@ CREATE TABLE attends (
     eventID int not null
 );
 
+-- Also need to submit the result from postgreSQL
+
 
 
 
