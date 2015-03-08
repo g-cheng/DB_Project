@@ -20,18 +20,18 @@ CREATE TABLE message (
 -- InstantMessages(imID, characterLength, messageID)
 -- foreign key: messageID references Messages(messageID)
 CREATE TABLE instantMessage (
-    imID int not null PRIMARY KEY,
+    messageID int not null PRIMARY KEY,
+    imID int not null,
     FOREIGN KEY (messageID) REFERENCES message,
-    messageID int not null,
     characterLength int
 );
 
 -- Emails(emailID, priority, messageID)
 -- foreign key: messageID references Messages(messageID)
 CREATE TABLE email (
-    emailID int not null PRIMARY KEY,
+    messageID int not null PRIMARY KEY,
+    emailID int not null,
     FOREIGN KEY (messageID) REFERENCES message,
-    messageID int not null,
     priority int
 );
 
@@ -51,9 +51,9 @@ CREATE TABLE circle (
 -- Groups(groupID, name, circleID)
 -- foreign key: circleID references Circles(circleID)
 CREATE TABLE friendGroup (
-    groupID int not null PRIMARY KEY,
+    circleID int not null PRIMARY KEY,
+    groupID int not null,
     FOREIGN KEY (circleID) REFERENCES circle,
-    circleID int not null,
     name varchar(30)
 );
 
@@ -61,10 +61,10 @@ CREATE TABLE friendGroup (
 -- foreign key: circleID references Circles(circleID)
 -- foreign key: memberID references Members(memberID)
 CREATE TABLE friendList (
-    friendListID int not null PRIMARY KEY,
+    circleID int not null PRIMARY KEY,
+    friendListID int not null,
     FOREIGN KEY (circleID) REFERENCES circle,
     FOREIGN KEY (memberID) REFERENCES member,
-    circleID int not null,
     memberID int not null,
     firstAddDate timestamp DEFAULT CURRENT_TIMESTAMP
 );
@@ -79,11 +79,11 @@ CREATE TABLE service (
 -- foreign key: memberID references Members(memberID)
 -- foreign key: serviceID references Services(serviceID)
 CREATE TABLE idea (
-    ideaID int not null PRIMARY KEY,
+    serviceID int not null PRIMARY KEY,
+    ideaID int not null,
     FOREIGN KEY (memberID) REFERENCES member,
     FOREIGN KEY (serviceID) REFERENCES service,
     memberID int not null,
-    serviceID int not null,
     content varchar(1000)
 );
 
@@ -91,10 +91,10 @@ CREATE TABLE idea (
 -- foreign key: serviceID references Services(serviceID)
 -- foreign key: memberID references Members(memberID)
 CREATE TABLE picture (
-    pictureID int not null PRIMARY KEY,
+    serviceID int not null PRIMARY KEY,
+    pictureID int not null,
     FOREIGN KEY (serviceID) REFERENCES service,
     FOREIGN KEY (memberID) REFERENCES member,
-    serviceID int,
     memberID int,
     fileSize int,
     url varchar(150)
@@ -104,10 +104,10 @@ CREATE TABLE picture (
 -- foreign key: serviceID references Services(serviceID)
 -- foreign key: memberID references Members(memberID)
 CREATE TABLE event (
-    eventID int not null PRIMARY KEY,
+    serviceID int not null PRIMARY KEY,
+    eventID int not null,
     FOREIGN KEY (serviceID) REFERENCES service,
     FOREIGN KEY (memberID) REFERENCES member,
-    serviceID int,
     memberID int,
     name varchar(30),
     eventDate date,
@@ -118,10 +118,10 @@ CREATE TABLE event (
 -- foreign key: serviceID references Services(serviceID)
 -- foreign key: memberID references Members(memberID)
 CREATE TABLE video (
-    videoID int not null PRIMARY KEY,
+    serviceID int not null PRIMARY KEY,
+    videoID int not null,
     FOREIGN KEY (serviceID) REFERENCES service,
     FOREIGN KEY (memberID) REFERENCES member,
-    serviceID int,
     memberID int,
     format varchar(30)
 );
