@@ -183,7 +183,7 @@ CREATE TABLE partOf (
     PRIMARY KEY (groupID, memberID),
     FOREIGN KEY (groupID) REFERENCES friendGroup,
     FOREIGN KEY (memberID) REFERENCES member,
-    groupID int not null,
+    groupID int not null UNIQUE,
     memberID int not null,
     joinDate timestamp DEFAULT CURRENT_TIMESTAMP
 );
