@@ -1,3 +1,5 @@
+-- Sample inserts
+
 INSERT INTO message (messageID, senderID, content)
 	VALUES (1, 1, 'Hey, how are you doing?');
 INSERT INTO message (messageID, senderID, content)
