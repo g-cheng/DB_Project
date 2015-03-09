@@ -37,16 +37,10 @@
 
 \copy partOf FROM 'csv/partOf.csv' WITH CSV HEADER;
 
-
------------------------------------------------------------
-
-
 \copy contains FROM 'csv/contains.csv' WITH CSV HEADER;
-
 
 \copy attends FROM 'csv/attends.csv' WITH CSV HEADER;
 
-------------------------------------------------------------
 
 
 

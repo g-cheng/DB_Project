@@ -105,7 +105,7 @@ CREATE TABLE picture (
 -- foreign key: memberID references Members(memberID)
 CREATE TABLE event (
     serviceID int not null PRIMARY KEY,
-    eventID int not null,
+    eventID int not null UNIQUE,
     FOREIGN KEY (serviceID) REFERENCES service,
     FOREIGN KEY (memberID) REFERENCES member,
     memberID int,
@@ -215,8 +215,8 @@ CREATE TABLE taggedIn (
 -- foreign key: eventID references Events(eventID)
 CREATE TABLE attends (
     PRIMARY KEY (memberID, eventID), 
-    FOREIGN KEY (memberID) REFERENCES member,
-    FOREIGN KEY (eventID) REFERENCES event,
+    FOREIGN KEY (memberID) REFERENCES member(memberID),
+    FOREIGN KEY (eventID) REFERENCES event(eventID),
     memberID int not null,
     eventID int not null
 );
