@@ -1,0 +1,26 @@
+serviceID,eventID,memberID,name,eventDate,'detail'
+51,1,35,'dance party','2003-07-19','Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.'
+52,2,75,'rock climbing','2013-01-30','Nullam molestie nibh in lectus.'
+53,3,76,'swimming','2002-12-03','Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.'
+54,4,94,'basketball','2010-03-10','Donec semper sapien a libero.'
+55,5,82,'hackathon','2004-08-24',"'In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.'"
+56,6,24,'code workshop','2005-03-05','Ut tellus. Nulla ut erat id mauris vulputate elementum.'
+57,7,97,'dinner party','2007-09-20','Curabitur convallis.'
+58,8,39,'movie','2009-04-27','Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.'
+59,9,23,'laser tag','2006-03-15',"'Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio.'"
+60,10,14,'soccer','2011-08-29',"'Q""uisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst.""'"
+61,11,25,'recruitment','2''008-07-18','Phasellus in felis.'
+62,12,11,'samosa','2013-01-12',"'E""tiam faucibus cursus urna. Ut tellus. Nulla ut erat id mauris vulputate elementum.""'"
+63,13,61,'halloween party','2002-12-02','Proin eu mi. Nulla ac enim.'
+64,14,18,'clubbing','2002-02-06',"'Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla.'"
+65,15,10,'party party','2003-01-06',"'In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc.'"
+66,16,52,'paintball','2005-03-14',"'Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.'"
+67,17,24,'code jam','2010-10-28','Donec dapibus. Duis at velit eu est congue elementum. In hac habitasse platea dictumst.'
+68,18,54,'recruitment 2','2010-04-11','In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt.'
+69,19,67,'surprise party','2006-03-18',"'In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc. Proin at turpis a pede posuere nonummy.'"
+70,20,73,'tutorial','2006-09-11',"'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien.'"
+71,21,61,'road trip','2004-04-22','Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla.'
+72,22,87,'hockey','2005-08-27','Nulla suscipit ligula in lacus.'
+73,23,95,'rugby','2008-01-26',"'Maecenas leo odio, condimentum id, luctus nec, molestie sed, justo. Pellentesque viverra pede ac diam.'"
+74,24,69,'concert','2010-11-08','Duis mattis egestas metus. Aenean fermentum.'
+75,25,92,'study session','2014-10-08','Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus. Curabitur at ipsum ac tellus semper interdum.'
