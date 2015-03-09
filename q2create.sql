@@ -111,7 +111,7 @@ CREATE TABLE event (
     memberID int,
     name varchar(50),
     eventDate date,
-    detail varchar(100)
+    detail varchar(1000)
 );
 
 -- Videos(videoID, format, serviceID, memberID)

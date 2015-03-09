@@ -13,3 +13,9 @@
 \copy friendGroup FROM 'csv/friendGroup.csv' WITH CSV HEADER;
 
 \copy friendList FROM 'csv/friendList.csv' WITH CSV HEADER;
+
+\copy service FROM 'csv/service.csv' WITH CSV HEADER;
+
+\copy idea FROM 'csv/idea.csv' WITH CSV HEADER;
+
+\copy picture FROM 'csv/picture.csv' WITH CSV HEADER;
