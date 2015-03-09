@@ -62,7 +62,7 @@ CREATE TABLE friendGroup (
 -- foreign key: memberID references Members(memberID)
 CREATE TABLE friendList (
     circleID int not null PRIMARY KEY,
-    friendListID int not null,
+    friendListID int not null UNIQUE,
     FOREIGN KEY (circleID) REFERENCES circle,
     FOREIGN KEY (memberID) REFERENCES member,
     memberID int not null,
@@ -195,8 +195,8 @@ CREATE TABLE contains (
     PRIMARY KEY (friendListID, memberID),   
     friendListID int not null,
     memberID int not null,
-    FOREIGN KEY (friendListID) REFERENCES friendList,
-    FOREIGN KEY (memberID) REFERENCES member
+    FOREIGN KEY (friendListID) REFERENCES friendList(friendListID),
+    FOREIGN KEY (memberID) REFERENCES member(memberID)
 );
 
 -- tagged-in(memberID, pictureID)
