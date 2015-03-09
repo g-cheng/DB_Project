@@ -33,6 +33,7 @@
 \copy livestream FROM 'csv/livestream.csv' WITH CSV HEADER;
 
 
+\copy taggedIn FROM 'csv/taggedIn.csv' WITH CSV HEADER; 
 
 -----------------------------------------------------------
 
@@ -40,11 +41,11 @@
 
 \copy contains FROM 'csv/contains.csv' WITH CSV HEADER;
 
-\copy taggedIn FROM 'csv/taggedIn.csv' WITH CSV HEADER;
 
 \copy attends FROM 'csv/attends.csv' WITH CSV HEADER;
 
 ------------------------------------------------------------
+
 
 
 

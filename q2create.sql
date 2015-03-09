@@ -92,7 +92,7 @@ CREATE TABLE idea (
 -- foreign key: memberID references Members(memberID)
 CREATE TABLE picture (
     serviceID int not null PRIMARY KEY,
-    pictureID int not null,
+    pictureID int not null UNIQUE,
     FOREIGN KEY (serviceID) REFERENCES service,
     FOREIGN KEY (memberID) REFERENCES member,
     memberID int,
@@ -181,9 +181,9 @@ CREATE TABLE livestream (
 -- foreign key: memberID references Members(memberID)
 CREATE TABLE partOf (
     PRIMARY KEY (groupID, memberID),
-    FOREIGN KEY (groupID) REFERENCES friendGroup,
-    FOREIGN KEY (memberID) REFERENCES member,
-    groupID int not null UNIQUE,
+    FOREIGN KEY (groupID) REFERENCES friendGroup(groupID),
+    FOREIGN KEY (memberID) REFERENCES member(memberID),
+    groupID int not null,
     memberID int not null,
     joinDate timestamp DEFAULT CURRENT_TIMESTAMP
 );
@@ -203,11 +203,11 @@ CREATE TABLE contains (
 -- foreign key: memberID references Members(memberID)
 -- foreign key: pictureID references Pictures(pictureID)
 CREATE TABLE taggedIn (
-    PRIMARY KEY (memberID, pictureID),   
-    FOREIGN KEY (memberID) REFERENCES member,
-    FOREIGN KEY (pictureID) REFERENCES picture,
+    pictureID int not null,
     memberID int not null,
-    pictureID int not null
+    FOREIGN KEY (memberID) REFERENCES member(memberID),
+    FOREIGN KEY (pictureID) REFERENCES picture(pictureID),
+    PRIMARY KEY (memberID, pictureID)
 );
 
 -- attends(memberID, eventID)
