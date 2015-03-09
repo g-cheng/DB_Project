@@ -16,6 +16,9 @@
 
 \copy service FROM 'csv/service.csv' WITH CSV HEADER;
 
-\copy idea FROM 'csv/idea.csv' WITH CSV HEADER;
+\copy idea FROM 'csv/idea.csv' WITH CSV HEADER; -----------
 
 \copy picture FROM 'csv/picture.csv' WITH CSV HEADER;
+
+\copy event FROM 'csv/event.csv' WITH CSV HEADER;
+
