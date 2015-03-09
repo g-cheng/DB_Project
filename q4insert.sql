@@ -61,7 +61,5 @@ INSERT INTO taggedIn (memberID, pictureID)
 INSERT INTO attends (memberID, eventID) 
 	VALUES (1, 1);
 
-COPY member FROM 'csv/member.csv' DELIMITER ',' CSV;
-
 
 
