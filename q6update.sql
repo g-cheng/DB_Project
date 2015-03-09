@@ -1,0 +1,4 @@
+-- 1. Harry posts a picture
+-- 2. Scott added Jacqueline as a friend
+-- 3. Scott tagged Harry in a picture
+-- 4. Jacqueline sends a message to Harry
