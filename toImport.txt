@@ -1,0 +1,37 @@
+\copy member FROM 'csv/member.csv' WITH CSV HEADER;
+
+\copy message FROM 'csv/message.csv' WITH CSV HEADER;
+
+\copy instantMessage FROM 'csv/instantMessage.csv' WITH CSV HEADER;
+
+\copy email FROM 'csv/email.csv' WITH CSV HEADER;
+
+\copy interest FROM 'csv/interest.csv' WITH CSV HEADER;
+
+\copy circle FROM 'csv/circle.csv' WITH CSV HEADER;
+
+\copy friendGroup FROM 'csv/friendGroup.csv' WITH CSV HEADER;
+
+\copy friendList FROM 'csv/friendList.csv' WITH CSV HEADER;
+
+\copy service FROM 'csv/service.csv' WITH CSV HEADER;
+
+\copy idea FROM 'csv/idea.csv' WITH CSV HEADER; 
+
+\copy picture FROM 'csv/picture.csv' WITH CSV HEADER;
+
+\copy event FROM 'csv/event.csv' WITH CSV HEADER;
+
+\copy video FROM 'csv/video.csv' WITH CSV HEADER;
+
+\copy post FROM 'csv/post.csv' WITH CSV HEADER;
+
+\copy receive FROM 'csv/receive.csv' WITH CSV HEADER;
+
+\copy share FROM 'csv/share.csv' WITH CSV HEADER;
+
+
+
+
+
+
