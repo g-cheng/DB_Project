@@ -1,9 +1,9 @@
 -- Members(memberID, email, name, password)
 CREATE TABLE member (
     memberID int not null PRIMARY KEY,
-    name varchar(30) not null,
-    email varchar(30) not null,
-    password varchar(30) not null
+    name varchar(50) not null,
+    email varchar(50) not null,
+    password varchar(50) not null
 );
 
 -- Messages(messageID, content, sendAt, memberID)
@@ -38,7 +38,7 @@ CREATE TABLE email (
 -- Interests(interestID, name, detail)
 CREATE TABLE interest (
     interestID int not null PRIMARY KEY,
-    name varchar(30),
+    name varchar(50),
     detail varchar(255)    
 );
 
@@ -54,7 +54,7 @@ CREATE TABLE friendGroup (
     circleID int not null PRIMARY KEY,
     groupID int not null,
     FOREIGN KEY (circleID) REFERENCES circle,
-    name varchar(30)
+    name varchar(50)
 );
 
 -- FriendLists(friendListID, firstAddDate, circleID, memberID)
@@ -109,7 +109,7 @@ CREATE TABLE event (
     FOREIGN KEY (serviceID) REFERENCES service,
     FOREIGN KEY (memberID) REFERENCES member,
     memberID int,
-    name varchar(30),
+    name varchar(50),
     eventDate date,
     detail varchar(100)
 );
@@ -123,7 +123,7 @@ CREATE TABLE video (
     FOREIGN KEY (serviceID) REFERENCES service,
     FOREIGN KEY (memberID) REFERENCES member,
     memberID int,
-    format varchar(30)
+    format varchar(50)
 );
 
 -- Posts(postID,circleID, memberID, serviceID, postDate)
