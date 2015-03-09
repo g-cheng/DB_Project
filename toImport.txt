@@ -12,4 +12,4 @@
 
 \copy friendGroup FROM 'csv/friendGroup.csv' WITH CSV HEADER;
 
-\copy friendGroup FROM 'csv/friendGroup.csv' WITH CSV HEADER;
+\copy friendList FROM 'csv/friendList.csv' WITH CSV HEADER;
