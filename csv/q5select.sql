@@ -1,0 +1,5 @@
+-- 1. which members has the most friends?
+-- 2. which members sent at least one message to Gerald? 3
+-- 3. which members is tagged in Michael's pictures?
+-- 4. which members are part of Linkbridge group? 
+-- 5. which is the largest group?
