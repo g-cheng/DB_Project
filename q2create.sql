@@ -52,7 +52,7 @@ CREATE TABLE circle (
 -- foreign key: circleID references Circles(circleID)
 CREATE TABLE friendGroup (
     circleID int not null PRIMARY KEY,
-    groupID int not null,
+    groupID int not null UNIQUE,
     FOREIGN KEY (circleID) REFERENCES circle,
     name varchar(50)
 );
