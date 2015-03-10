@@ -44,4 +44,4 @@ INSERT INTO event (eventDate, eventID, serviceID, memberID, name, detail)
 
 -- 2. 2nd CONSTRAINT Email has to contain a single @
 
-ALTER TABLE member ADD CHECK (email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$');
+ALTER TABLE event ADD CHECK (eventDate > CURRENT_DATE);
