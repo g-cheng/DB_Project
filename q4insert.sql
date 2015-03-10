@@ -1,4 +1,4 @@
--- Sample inserts
+-- Sample inserts USE q5import.txt for mass import
 
 INSERT INTO message (messageID, senderID, content)
 	VALUES (1, 1, 'Hey, how are you doing?');
@@ -80,6 +80,68 @@ INSERT INTO attends (memberID, eventID)
 --          4 |        4 | 'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.'                                                                       | 2012-05-12 16:48:01 | 2007-06-09 13:46:01
 --          5 |       44 | 'Donec semper sapien a libero. Nam dui.'                                                                                                                   | 2010-10-31 19:13:01 | 2012-12-27 01:28:01
 -- (5 rows)
+
+-- michaelchum=# select * from instantmessage limit 5;
+--  messageid | imid | characterlength
+-- -----------+------+-----------------
+--          1 |    1 |             759
+--          2 |    2 |             784
+--          3 |    3 |             616
+--          4 |    4 |             838
+--          5 |    5 |             526
+-- (5 rows)
+
+-- michaelchum=# select * from email limit 5;
+--  messageid | emailid | priority
+-- -----------+---------+----------
+--         51 |       1 |        1
+--         52 |       2 |        2
+--         53 |       3 |        2
+--         54 |       4 |        1
+--         55 |       5 |        2
+-- (5 rows)
+
+-- michaelchum=# select * from interest limit 5;
+--  interestid |      name       |                                                              detail
+-- ------------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------
+--           1 | 'nisl'          | 'Suspendisse accumsan tortor quis turpis. Sed ante.'
+--           2 | 'nulla tellus'  | 'In quis justo. Maecenas rhoncus aliquam lacus.'
+--           3 | 'nibh'          | 'Morbi quis tortor id nulla ultrices aliquet.'
+--           4 | 'curabitur'     | 'Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo.'
+--           5 | 'dapibus nulla' | 'Pellentesque ultrices mattis odio.'
+-- (5 rows)
+
+-- michaelchum=# select * from circle limit 5;
+--  circleid | creationdate
+-- ----------+--------------
+--         1 | 2010-01-11
+--         2 | 2008-03-24
+--         3 | 2006-08-17
+--         4 | 2009-11-30
+--         5 | 2012-05-06
+-- (5 rows)
+
+-- michaelchum=# select * from friendGroup limit 5;
+--  circleid | groupid |    name
+-- ----------+---------+-------------
+--       106 |       1 | 'Flipstorm'
+--       136 |       2 | 'Oyondu'
+--       114 |       3 | 'Roodel'
+--       116 |       4 | 'Skilith'
+--       118 |       5 | 'BlogXS'
+-- (5 rows)
+
+-- michaelchum=# select * from friendList limit 5;
+--  circleid | friendlistid | memberid |    firstadddate
+-- ----------+--------------+----------+---------------------
+--         1 |            1 |        1 | 2005-04-06 07:29:01
+--        39 |            2 |        2 | 2008-01-22 13:23:01
+--        64 |            3 |        3 | 2013-07-01 15:48:01
+--        83 |            4 |        4 | 2005-10-26 12:58:01
+--        25 |            5 |        5 | 2004-09-07 01:31:01
+-- (5 rows)
+
+
 
 
 
