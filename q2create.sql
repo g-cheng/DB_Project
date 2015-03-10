@@ -123,8 +123,8 @@ CREATE TABLE video (
     FOREIGN KEY (serviceID) REFERENCES service,
     FOREIGN KEY (memberID) REFERENCES member,
     memberID int,
-    fileSize int,
-    format varchar(50)
+    format varchar(50),
+    fileSize int
 );
 
 -- Posts(postID,circleID, memberID, serviceID, postDate)
