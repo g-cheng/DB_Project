@@ -61,5 +61,25 @@ INSERT INTO taggedIn (memberID, pictureID)
 INSERT INTO attends (memberID, eventID) 
 	VALUES (1, 1);
 
+-- project=# select * from member limit 5;
+--  memberid |   name   |           email           |   password    
+-- ----------+----------+---------------------------+---------------
+--         1 | 'Jerry'  | 'jbutler0@squidoo.com'    | 'R3yUz1Q'
+--         2 | 'Joyce'  | 'jallen1@elpais.com'      | 'wGYf1ez'
+--         3 | 'Brenda' | 'bgutierrez2@answers.com' | 'MxoASzcFe'
+--         4 | 'Jean'   | 'jlane3@va.gov'           | 'jaxTQbXX'
+--         5 | 'Irene'  | 'iwillis4@cloudflare.com' | 'Fn1LYbqDhFx'
+-- (5 rows)
+
+-- project=# select * from message limit 5;
+--  messageid | senderid |                                                                          content                                                                           |       sentat        |     receivedat      
+-- -----------+----------+------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------+---------------------
+--          1 |       83 | 'Nunc purus. Phasellus in felis. Donec semper sapien a libero.'                                                                                            | 2002-07-21 15:50:01 | 2010-12-07 05:34:01
+--          2 |       10 | 'Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue.' | 2009-11-01 08:04:01 | 2011-08-25 18:43:01
+--          3 |       84 | 'Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue.'                                                    | 2007-06-29 00:10:01 | 2009-10-20 09:18:01
+--          4 |        4 | 'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.'                                                                       | 2012-05-12 16:48:01 | 2007-06-09 13:46:01
+--          5 |       44 | 'Donec semper sapien a libero. Nam dui.'                                                                                                                   | 2010-10-31 19:13:01 | 2012-12-27 01:28:01
+-- (5 rows)
+
 
 
