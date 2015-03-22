@@ -39,14 +39,14 @@ running:
 
 edit this.dbURL value to match the name of your local database then run
 
-java DBApp <dbUserName> <dbPassword>
+java DBApp dbUserName dbPassword
 
 
 if you get "Class Not Found" exception:
 
  - most likely ran into a problem with your JDBC driver. make sure you have the driver .jar file, make sure its part of your classpath
 
-if you get "authentication failed for user <dbusernname>" exception:
+if you get "authentication failed for user dbusernname" exception:
 
  - most likely your local psql doesn't allow you to connect via other users than your unix shell username, you need to edit your pg_hba.conf file
 
