@@ -27,3 +27,30 @@ q3insert.sql and q4insert.sql are only working samples. To populate the whole da
 
 
 Thanks!
+
+
+
+
+
+notes on running the commandline interface with your local psql database
+
+
+running:
+
+edit this.dbURL value to match the name of your local database then run
+
+java DBApp <dbUserName> <dbPassword>
+
+
+if you get "Class Not Found" exception:
+
+ - most likely ran into a problem with your JDBC driver. make sure you have the driver .jar file, make sure its part of your classpath
+
+if you get "authentication failed for user <dbusernname>" exception:
+
+ - most likely your local psql doesn't allow you to connect via other users than your unix shell username, you need to edit your pg_hba.conf file
+
+
+after you get it to connect successfully, just edit methods choice2, choice3, choice4 and choice5, these are the menu options.
+
+I already wrote choice1, it probably needs alot of refactoring but at least it runs so you can take a look at it if you want.
