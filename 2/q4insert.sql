@@ -38,7 +38,7 @@ INSERT INTO event (eventID, serviceID, memberID, name, detail)
 	VALUES (1, 1, 1, 'Unreal Hackathon', 'Build the next augmented reality hacks');
 
 INSERT INTO video (videoID, serviceID, memberID, format)
-	VALUES (1, 1, 1, 'MOV');
+	VALUES (1, 1, 1, 'avi');
 
 INSERT INTO post (postID, circleID, memberID, serviceID)
 	VALUES (1, 1, 1, 1);
