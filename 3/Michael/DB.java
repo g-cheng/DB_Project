@@ -51,10 +51,16 @@ public class DB {
 	    return rs;
 	}
 
-	private int findLargestId(String table, String idHeader) {
-		ResultSet result = query("SELECT memberid FROM member WHERE memberid = (SELECT MAX(memberid) FROM member)");
-		int largestId = null;
-
+	private int getLargestId(String table, String primaryIdHeader) {
+		ResultSet result = query("SELECT " + primaryIdHeader + " FROM " + table + " WHERE " + primaryIdHeader + " = (SELECT MAX(" + primaryIdHeader + ") FROM " + table + ")");
+		int largestId = 1;
+		try {
+			// get the number of rows from the result set
+		    result.next();
+			largestId = result.getInt(1);
+	    } catch (SQLException e) {
+	    	e.printStackTrace();
+	    }
 		return largestId;	
 	}
 
@@ -73,29 +79,28 @@ public class DB {
 	}
 
 	private boolean checkMemberExist(int memberId) {
-	    Statement stmt = null;
-    	ResultSet rs = null;
-    	int rowCount = 0;
+		ResultSet result = query("SELECT COUNT(*) FROM member WHERE name=" + "'" + memberId + "'");
+		int rowCount = 0;
 		try {
-			stmt = this.c.createStatement();
-			rs = stmt.executeQuery("SELECT COUNT(*) FROM member WHERE memberid=" + Integer.toString(memberId));
 			// get the number of rows from the result set
-			rs.next();
-			rowCount = rs.getInt(1);
+		    result.next();
+			rowCount = result.getInt(1);
 	    } catch (SQLException e) {
-			e.printStackTrace();
+	    	e.printStackTrace();
 	    }
-	   	if (rowCount > 0) return true;
+		if (rowCount > 0) return true;
 	    return false;
 	}
 
-	private void registerMember(String memberName, String email, String memberPassword) {
+	private void registerMember(String memberName, String email, String password) {
 		// Check if member already exists
 		if (checkMemberExist(memberName)) {
 			System.out.println("Error, your name already exists in the database, please use a different name");
 			return;	
 		}
-		String query = "";
+		int newId = getLargestId("member", "memberId") + 1;
+		String queryInput = "INSERT INTO member (memberID, name, email, password) VALUES (" + newId + ", '" + memberName + "', '" + email + "', '" + password + "')";
+		query(queryInput);
 
 		System.out.println("Member, you have been registered successfully, you can now login, welcome to bookface!");	
 	}
@@ -121,6 +126,6 @@ public class DB {
 
 	public static void main(String[] args) {
 		DB myDB = new DB();
-		myDB.registerMember("Kevin", "kevin@gmail.com", "blablabla");
+		myDB.registerMember("helllllloooooo", "myemail@gmail.com", "blablblaba");
 	}
 }
