@@ -4,6 +4,8 @@ Brian Zhou 260381251 brian.zhou@mail.mcgill.ca
 
 We used PostgreSQL 9.4 on Ubuntu 14.04 and Mac OS X Yosemite
 
+### Deliverable 2
+
 To run our scripts and populate the database:
 
 1. Go to the current directory in terminal
@@ -20,20 +22,12 @@ To drop the whole database
 
 $ \i drop.sql
 
-
 Note:
-
 q3insert.sql and q4insert.sql are only working samples. To populate the whole database we used csv files with q4import.
 
+### Deliverable 3
 
-Thanks!
-
-
-
-
-
-notes on running the commandline interface with your local psql database
-
+Running the CLI with your local psql database
 
 running:
 
