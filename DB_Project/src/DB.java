@@ -131,4 +131,17 @@ public class DB {
 			}
     	}
 	}
+
+	private int getLargestId(String table, String primaryIdHeader) {
+		ResultSet result = query("SELECT " + primaryIdHeader + " FROM " + table + " WHERE " + primaryIdHeader + " = (SELECT MAX(" + primaryIdHeader + ") FROM " + table + ")");
+		int largestId = 1;
+		try {
+			// get the number of rows from the result set
+		    result.next();
+			largestId = result.getInt(1);
+	    } catch (SQLException e) {
+	    	e.printStackTrace();
+	    }
+		return largestId;
+	}
 }
