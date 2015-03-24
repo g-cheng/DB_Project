@@ -1,0 +1,18 @@
+Successfully Connected to Database.
+Query on Which members has the most friends?
+    Time spend on query without the index on name: 70
+Executing: Create index memberName on member(name)
+Index is successfully created.
+cleaning up by dropping the index
+Executing: drop index memberName
+Index is successfully dropped.
+    Time spend on query with the index on name: 7
+===============================================
+    Which members are part of Linkbridge group? 
+    Time spend on query without the index on name: 26
+Executing: Create index groupName on friendGroup(name)
+Index is successfully created.
+cleaning up by dropping the index
+Executing: drop index groupName
+Index is successfully dropped.
+    Time spend on query with the index on name: 5
