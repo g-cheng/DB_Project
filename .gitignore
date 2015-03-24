@@ -1,2 +1,4 @@
 .DS_Store
 *.class
+DB_Project/bin
+DB_Project/.classpath
