@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 public class DB {
 
-	private String url = "jdbc:postgresql://localhost/project";
+	private String url = "jdbc:postgresql://localhost/postgres";
 	private String username = "postgres";
 	private String password = "root";
 	private Connection c = null;
@@ -51,19 +51,16 @@ public class DB {
 	}
 
 	public User login(String name, String password) {
-		String query = "Select * From Member where name='''" + name + "'''" 
-				+ "AND password='''" + password + "'''";
+		String query = "Select * From Member where name='" + name + "'" 
+				+ "AND password='" + password + "'";
 		JSONArray result = executeSelectSql(query);
-		boolean isExist = false;
 		User currentUser = null;
 		if(result.length() > 0) {
 			try {
-				isExist = true;
 				JSONObject entry = result.getJSONObject(0);
 				int memberID = entry.getInt("memberid");
 				String email = entry.getString("email");
 				currentUser = new User(memberID, name, email);
-				
 			} catch (JSONException e) {
 				System.err.println(e.getClass().getName() + ": " + e.getMessage());
 				System.exit(0);
@@ -122,5 +119,16 @@ public class DB {
 			json.put(obj);
 		}
 		return json;
+	}
+
+	public void printJSONArray(JSONArray input) {
+		for (int i = 0; i < input.length(); ++i) {
+			try {
+			    JSONObject rec = input.getJSONObject(i);
+			    System.out.println(rec.toString(2));				
+			} catch (JSONException e) {
+
+			}
+    	}
 	}
 }

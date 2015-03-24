@@ -7,11 +7,13 @@ public class Bookface {
 	
 	public static void main(String[] args) {
 		
-		user = db.login("Jerry", "R3yUz1Q");
+		user = db.login("Joshua", "DMe2t7eyL");
 		
-		if(user == null)
-			System.out.println("Unable to login, please try again with a correct name and password combination.");
+		if (user == null) {
+			System.out.println("Unable to login, please try again with a correct name and password combination");
+		} else {
+			System.out.println("Login successful! Welcome back " + user.getName());
+		}
 		
-			
 	}
 }
