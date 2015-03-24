@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 public class DB {
 
-	private String url = "jdbc:postgresql://localhost/postgres";
+	private String url = "jdbc:postgresql://localhost/project";
 	private String username = "postgres";
 	private String password = "root";
 	private Connection c = null;
@@ -45,28 +45,58 @@ public class DB {
 		try {
 			c.close();
 		} catch (SQLException e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-			System.exit(0);
+			errorPrinting(e);
 		}
 	}
 
 	public User login(String name, String password) {
-		String query = "Select * From Member where name='" + name + "'" 
+		String query = "Select * From Member where name='" + name + "'"
 				+ "AND password='" + password + "'";
 		JSONArray result = executeSelectSql(query);
 		User currentUser = null;
-		if(result.length() > 0) {
+		if (result.length() > 0) {
 			try {
 				JSONObject entry = result.getJSONObject(0);
 				int memberID = entry.getInt("memberid");
 				String email = entry.getString("email");
 				currentUser = new User(memberID, name, email);
+
 			} catch (JSONException e) {
-				System.err.println(e.getClass().getName() + ": " + e.getMessage());
-				System.exit(0);
+				errorPrinting(e);
 			}
 		}
 		return currentUser;
+	}
+
+	public JSONObject getGroup(String groupName) {
+		JSONObject result = null;
+		String query = "Select * from friendgroup where name='''" + groupName
+				+ "'''";
+		JSONArray entries = executeSelectSql(query);
+		try {
+			if (entries.length() > 0)
+				result = entries.getJSONObject(0);
+		} catch (JSONException e) {
+			errorPrinting(e);
+		}
+		return result;
+	}
+
+	public int getGroupID(JSONObject groupEntry) {
+		int groupID = -1;
+		try {
+			groupID = groupEntry.getInt("groupid");
+		} catch (JSONException e) {
+			errorPrinting(e);
+		}
+		return groupID;
+	}
+
+	public void addGroup(int groupID, int memberID) {
+		String query = "Insert into partof (groupid, memberid) values ("
+				+ groupID + "," + memberID + ")";
+		System.out.println(query);
+		executeInsertSql(query);
 	}
 
 	public JSONArray executeSelectSql(String sql) {
@@ -79,10 +109,20 @@ public class DB {
 			result = convert(rs);
 			stmt.close();
 		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-			System.exit(0);
+			errorPrinting(e);
 		}
 		return result;
+	}
+
+	public void executeInsertSql(String sql) {
+		Statement stmt = null;
+		try {
+			stmt = c.createStatement();
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
+			errorPrinting(e);
+		}
 	}
 
 	private JSONArray convert(ResultSet rs) throws SQLException, JSONException {
@@ -120,28 +160,9 @@ public class DB {
 		}
 		return json;
 	}
-
-	public void printJSONArray(JSONArray input) {
-		for (int i = 0; i < input.length(); ++i) {
-			try {
-			    JSONObject rec = input.getJSONObject(i);
-			    System.out.println(rec.toString(2));				
-			} catch (JSONException e) {
-
-			}
-    	}
-	}
-
-	private int getLargestId(String table, String primaryIdHeader) {
-		ResultSet result = query("SELECT " + primaryIdHeader + " FROM " + table + " WHERE " + primaryIdHeader + " = (SELECT MAX(" + primaryIdHeader + ") FROM " + table + ")");
-		int largestId = 1;
-		try {
-			// get the number of rows from the result set
-		    result.next();
-			largestId = result.getInt(1);
-	    } catch (SQLException e) {
-	    	e.printStackTrace();
-	    }
-		return largestId;
+	
+	private void errorPrinting(Exception e) {
+		System.err.println(e.getClass().getName() + ": " + e.getMessage());
+		System.exit(0);
 	}
 }

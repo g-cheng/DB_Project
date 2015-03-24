@@ -1,3 +1,5 @@
+import org.json.JSONObject;
+
 
 public class Bookface {
 
@@ -7,13 +9,24 @@ public class Bookface {
 	
 	public static void main(String[] args) {
 		
-		user = db.login("Joshua", "DMe2t7eyL");
-		
-		if (user == null) {
-			System.out.println("Unable to login, please try again with a correct name and password combination");
-		} else {
-			System.out.println("Login successful! Welcome back " + user.getName());
+		login("Jerry", "R3yUz1Q");	
+//		joinGroup("Livefish");
+	}
+	
+	public static void joinGroup(String groupName) {
+		JSONObject group = db.getGroup(groupName);
+		if(group == null) {
+			System.out.println("Group does not exist. Please try again.");
 		}
-		
+		else {
+			int groupID = db.getGroupID(group);
+			db.addGroup(groupID, user.getID());
+		}
+	}
+	
+	public static void login(String name, String password) {
+		user = db.login("Jerry", "R3yUz1Q");
+		if(user == null)
+			System.out.println("Unable to login, please try again with a correct name and password combination.");
 	}
 }
