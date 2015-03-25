@@ -161,7 +161,7 @@ public class DB {
 		return json;
 	}
 	
-	private void errorPrinting(Exception e) {
+	public void errorPrinting(Exception e) {
 		System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		System.exit(0);
 	}
