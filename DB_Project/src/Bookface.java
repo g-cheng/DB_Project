@@ -26,6 +26,8 @@ public class Bookface {
 		System.out.println("6. EXIT");
 	}
 
+	// connects user with user name and password
+	//returns true if successful, false if not
 	private static boolean userConnected(){
 
 		user = db.login("Joshua", "DMe2t7eyL");
@@ -41,6 +43,7 @@ public class Bookface {
 
 	}
 
+	//keeps on asking user for input until user inputs an int
 	private static int getUserInput(String promptMessage){
 
 		while (true)
@@ -67,7 +70,7 @@ public class Bookface {
 	}
 
 
-	//validate menu choice
+	//validate menu choice (has to be between 1 and 6)
 	private static boolean isValidMenuChoice(int choice)
 	{
 		if(choice > 6 || choice < 1)
@@ -80,6 +83,11 @@ public class Bookface {
 		}
 	}
 
+	//input:
+	// - name of table you want to insert into
+	// - name of primary key
+	//output:
+	// - returns (the maximum ID that exist in the table currently incremented by 1)
 	private static int generateUniqueID(String tableName, String pkName)
 	{
 		int uniqueID=-1;
@@ -102,6 +110,7 @@ public class Bookface {
 
 	}
 
+	//checks if the id choosen can be found inside the jsonarray under attribute pkName
 	private static boolean isValidIdChoice(JSONArray arr, int id, String pkName)
 	{
 
@@ -372,6 +381,7 @@ public class Bookface {
 
 
 		circleID = getUserInput("enter circleID:");
+
 
 
 		while(!isValidIdChoice(accArray, circleID, "circleID"))
