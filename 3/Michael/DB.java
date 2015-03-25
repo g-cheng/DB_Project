@@ -123,7 +123,6 @@ public class DB {
 
 	private boolean checkMemberExist(String memberName) {
 		JSONArray result = executeSelectSql("SELECT COUNT(*) FROM member WHERE name=" + "'" + memberName + "'");
-
 		if (result.length() > 0) {
 			for (int i = 0; i < result.length(); i++) {
 				try {
@@ -140,45 +139,130 @@ public class DB {
 	private boolean checkMemberExist(int memberId) {
 		JSONArray result = executeSelectSql("SELECT COUNT(*) FROM member WHERE name=" + "'" + memberId + "'");
 		if (result.length() > 0) {
-
+			for (int i = 0; i < result.length(); i++) {
+				try {
+					int count = result.getJSONObject(0).getInt("count");
+					if (count > 0) return true;
+				} catch (JSONException e) {
+					errorPrinting(e);
+				}
+			}
 		}
 	    return false;
 	}
 
-	private boolean registerMember(String memberName, String email, String password) {
+	private boolean checkInFriendList(int memberid, String friendName) {
+		JSONArray friendList = getFriendList(memberid);
+		for (int i = 0; i < friendList.length(); i++) {
+			try {
+				String friendListName = friendList.getJSONObject(i).getString("name");
+				if (friendName.equals(friendListName)) return true;
+			} catch (JSONException e) {
+				errorPrinting(e);
+			}
+		}
+		return false;
+	}
+
+	private JSONArray getFriendList(int memberid) {
+		JSONArray result = executeSelectSql("SELECT m.memberid, m.name FROM member m INNER JOIN (SELECT memberid FROM contains WHERE friendlistid = (SELECT friendlistid FROM friendlist WHERE memberid = " + memberid + ")) f ON m.memberid = f.memberid;");
+		return result;
+	}
+
+	private int getMemberId(String memberName) {
+		JSONArray result = executeSelectSql("SELECT memberid FROM member WHERE name = '" + memberName + "'");
+		if (result.length() > 0) {
+			try {
+				return result.getJSONObject(0).getInt("memberid");
+			} catch (JSONException e) {
+				errorPrinting(e);
+			}
+		}
+		return 0;
+	}
+
+	private int getFriendListId(int memberid) {
+		JSONArray result = executeSelectSql("SELECT friendlistid FROM friendlist WHERE memberid = " + memberid);
+		if (result.length() > 0) {
+			try {
+				return result.getJSONObject(0).getInt("friendlistid");
+			} catch (JSONException e) {
+				errorPrinting(e);
+			}
+		}
+		return 0;
+	}
+
+	public void registerMember(String memberName, String email, String password) {
 		// Check if member already exists
 		if (checkMemberExist(memberName)) {
 			System.out.println("Error, your name already exists in the database, please use a different name");
-			return false;	
+			return;	
 		}
-		int newId = getLargestId("member", "memberId") + 1;
-		executeInsertSql("INSERT INTO member (memberID, name, email, password) VALUES (" + newId + ", '" + memberName + "', '" + email + "', '" + password + "')");
+		int newId = getLargestId("member", "memberid") + 1;
+		executeInsertSql("INSERT INTO member (memberID, name, email, password) VALUES (" + String.valueOf(newId) + ", '" + memberName + "', '" + email + "', '" + password + "')");
 		System.out.println("Success, " + memberName + " have been registered, you can now login, welcome to Bookface!");	
-		return true;
 	}
 
-	public void addFriend(String memberName, String friendAddedName) {
-		System.out.println("Error, " + friendAddedName + " not found in the database");
-		System.out.println("Error, " + friendAddedName + " is already in your friendlist!");
-		System.out.println(friendAddedName + " successfully added to your friendlist");
+	public void addFriend(int memberid, String memberName, String friendName) {
+		// Check if memberName and friendName exists
+		if (!checkMemberExist(memberName)) {
+			System.out.println("Error, " + memberName + " does not exist in the database");
+			return;	
+		} else if (!checkMemberExist(friendName)) {
+			System.out.println("Error, " + friendName + " does not exist in the database");
+			return;	
+		} else if (checkInFriendList(memberid, friendName)) {
+			System.out.println("Error, " + friendName + " is already in your friendlist!");
+			return;
+		}
+		// Add to friendlist
+		int friendId = getMemberId(friendName);
+		int friendListId = getFriendListId(friendId);
+		db.executeInsertSql("INSERT INTO contains (friendListID, memberID) VALUES (" + Integer.toString(friendListId) + ", " + Integer.toString(friendId) + ")");
+		System.out.println(friendName + " successfully added to your friendlist");
 	}
 
-	public void removeFriend(String memberName, String friendRemovedName) {
-		System.out.println("Error, " + friendRemovedName + " is not in your friendlist");
-		System.out.println("Success, " + friendRemovedName + " successfully removed from your friendlist");
+	public void removeFriend(int memberid, String memberName, String friendName) {
+		// Check if memberName and friendName exists
+		if (!checkMemberExist(memberName)) {
+			System.out.println("Error, " + memberName + " does not exist in the database");
+			return;	
+		} else if (!checkMemberExist(friendName)) {
+			System.out.println("Error, " + friendName + " does not exist in the database");
+			return;	
+		} else if (!checkInFriendList(memberid, friendName)) {
+			System.out.println("Error, " + friendName + " is not in your friendlist");
+			return;
+		}
+		// Remove from friendlist
+		int friendId = getMemberId(friendName);
+
+
+		System.out.println("Success, " + friendName + " successfully removed from your friendlist");
 	}
 
-	public void sendMessage(String memberName, String destinationMemberName, String message) {
+	public void sendMessage(int memberid, String memberName, String destinationMemberName, String message) {
 		System.out.println("Error, destination member name does not exists");
 		System.out.println("Success, message sent to " + destinationMemberName);
 	}
 
-	public void showFriendList(String memberName) {
-
+	public void showFriendList(int memberid) {
+		JSONArray result = getFriendList(memberid);
+		System.out.println("ID | " + "name");		
+		for (int i = 0; i < result.length(); i++) {
+			try {
+				int friendid = result.getJSONObject(i).getInt("memberid");
+				String name = result.getJSONObject(i).getString("name");
+				System.out.println(friendid + " " + name);			
+			} catch (JSONException e) {
+				errorPrinting(e);
+			}
+		}
 	}
 
 	public static void main(String[] args) {
 		DB db = new DB();
-		db.registerMember("Helloooooooooo", "hellohello@gmail.com", "blablabal");
+		db.showFriendList(44);
 	}
 }
