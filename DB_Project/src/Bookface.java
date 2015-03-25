@@ -1,6 +1,5 @@
 import org.json.JSONObject;
 
-
 public class Bookface {
 
 	static DB db = new DB();
@@ -25,7 +24,7 @@ public class Bookface {
 	}
 	
 	public static void login(String name, String password) {
-		user = db.login("Jerry", "R3yUz1Q");
+		user = db.login(name, password);
 		if(user == null)
 			System.out.println("Unable to login, please try again with a correct name and password combination.");
 	}
