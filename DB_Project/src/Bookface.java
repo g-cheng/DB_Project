@@ -60,7 +60,7 @@ public class Bookface {
 			}
 			catch (Exception e)
 			{
-				System.out.println("choice entered not an int, please try again\n\n");
+				System.out.println("choice entered not an int, please try again");
 				System.out.println("______________________________________");
 				continue;
 			}
@@ -137,6 +137,71 @@ public class Bookface {
 
 
 
+	private static void displayChoiceMessage(String msg)
+	{
+		System.out.println("=======================================================================");
+		System.out.println(msg);
+	}
+
+	//prints out each row of the array and strips out the useless info
+	private static JSONArray stripAndPrintAttributes(JSONArray inputArray, String pkName, String additionalMessage)
+	{
+		JSONArray outputArray = new JSONArray();
+
+		for(int i = 0; i<inputArray.length(); i++)
+		{
+			try{
+				
+				System.out.println(pkName+"="+inputArray.getJSONObject(i).getInt(pkName) +"\t"+ additionalMessage);
+				JSONObject obj = new JSONObject();
+				obj.put(pkName,inputArray.getJSONObject(i).getInt(pkName));
+				outputArray.put(obj);
+
+
+			}
+			catch(JSONException e)
+			{
+				db.errorPrinting(e);
+			}
+		}
+
+		return outputArray;
+	}
+
+	//ask for user to input a valid id choice until the inputed choice is valid, i.e it exists in the jsonarray
+	private static int getIdChoice(JSONArray inputArray, String pkName)
+	{	
+		int chosenID;
+
+		chosenID = getUserInput("enter " + pkName +":");
+		while(!isValidIdChoice(inputArray, chosenID, pkName))
+		{
+			System.out.println("invalid " + pkName + " choice, try again:");
+			chosenID= getUserInput("enter "+ pkName +":");
+		}
+
+		return chosenID;
+	}
+
+	//concatenates 2 JSON arrays
+	private static JSONArray concatJSONArrays(JSONArray a1, JSONArray a2)
+	{
+		try
+		{
+			for(int i = 0; i<a1.length(); i++)
+			{
+				a2.put(a1.getJSONObject(i));
+			}
+		}
+		catch (JSONException e)
+		{
+			db.errorPrinting(e);
+		}
+		
+
+		return a2;
+	}
+
 	public static void choice1(){
 
 		
@@ -149,51 +214,30 @@ public class Bookface {
 
 		int memberID;
 
-		//choose a member
-		System.out.println("=======================================================================");
-		System.out.println("Choose a member with content available to post from the list:");
+
+
+		//choose a member-----------------------------------------------------------------
+		
+		displayChoiceMessage("Choose a member with content available to post from the list:");
 
 		String sql = ("SELECT DISTINCT memberID FROM (SELECT memberID FROM idea union SELECT memberID FROM picture union SELECT memberID from event union SELECT memberID from video) as res1;");
 
 		JSONArray membersWithContent = db.executeSelectSql(sql);
 
+		membersWithContent = stripAndPrintAttributes(membersWithContent, "memberid", "");
+		
 
-		for(int i = 0; i<membersWithContent.length(); i++)
-		{
-			try{
-				
-				System.out.println(membersWithContent.getJSONObject(i).getInt("memberid"));
-
-			}
-			catch(JSONException e)
-			{
-				db.errorPrinting(e);
-			}
-		}
+		memberID = getIdChoice(membersWithContent, "memberid");
+		
 
 		
 
-		memberID = getUserInput("enter memberID:");
-		
-		while(!isValidIdChoice(membersWithContent, memberID, "memberid"))
-		{
-			System.out.println("invalid member choice, try again:");
-			memberID = getUserInput("enter memberID:");
-		}
-
-		
-
-		// choose a service
-
-		JSONArray accArray = new JSONArray();
+		// choose a service-----------------------------------------------------------------
 
 
 
 
-
-		System.out.println("=======================================================================");
-
-		System.out.println("Choose a service to post:");
+		displayChoiceMessage("Choose a service to post:");
 
 		
 		sql = ("SELECT serviceID FROM idea WHERE memberID="+memberID+";");
@@ -201,51 +245,20 @@ public class Bookface {
 
 		JSONArray availableIdeas = db.executeSelectSql(sql);
 
-		for(int i = 0; i<availableIdeas.length(); i++)
-		{
-			
-
-			try{
-
-				System.out.println("serviceID=" + availableIdeas.getJSONObject(i).getInt("serviceid") + "\t" + "type=idea");
-
-				JSONObject obj = new JSONObject();
-				obj.put("serviceID",availableIdeas.getJSONObject(i).getInt("serviceid"));
-				accArray.put(obj);
-			}
-			catch(JSONException e)
-			{
-				db.errorPrinting(e);
-			}
-			
-
-		}
-
+		availableIdeas = stripAndPrintAttributes(availableIdeas, "serviceid", "\t type=idea");
 		
+
+
+
 
 		sql = ("SELECT serviceID FROM picture WHERE memberID="+memberID+";");
 
 
 		JSONArray availablePictures = db.executeSelectSql(sql);
 
-		for(int i = 0; i<availablePictures.length(); i++)
-		{
+		availablePictures = stripAndPrintAttributes(availablePictures, "serviceid", "\t type = picture");
 
-
-			try{
-
-				System.out.println("serviceID=" + availablePictures.getJSONObject(i).getInt("serviceid") + "\t" + "type=picture");
-
-				JSONObject obj = new JSONObject();
-				obj.put("serviceID",availablePictures.getJSONObject(i).getInt("serviceid"));
-				accArray.put(obj);
-			}
-			catch(JSONException e)
-			{
-				db.errorPrinting(e);
-			}
-			
-		}
+		
 
 
 
@@ -254,76 +267,41 @@ public class Bookface {
 
 		JSONArray availableEvents = db.executeSelectSql(sql);
 
-		for(int i = 0; i<availableEvents.length(); i++)
-		{
-
-
-			try{
-				
-				System.out.println("serviceID=" + availableEvents.getJSONObject(i).getInt("serviceid") + "\t" + "type=event");
-				JSONObject obj = new JSONObject();
-				obj.put("serviceID", availableEvents.getJSONObject(i).getInt("serviceid"));
-				accArray.put(obj);			
-			}
-			catch(JSONException e)
-			{
-				db.errorPrinting(e);
-			}
-
-		}
+		availableEvents = stripAndPrintAttributes(availableEvents, "serviceid", "\t type=event");
 
 		
+
+		
+
 		sql = ("SELECT serviceID FROM video WHERE memberID="+memberID+";");
 
 
 		JSONArray availableVideos = db.executeSelectSql(sql);
 
-		for(int i = 0; i<availableVideos.length(); i++)
-		{
-			
-
-			try{
-
-				System.out.println("serviceID=" + availableVideos.getJSONObject(i).getInt("serviceid") + "\t" + "type=video");
-
-
-				JSONObject obj = new JSONObject();
-				obj.put("serviceID", availableVideos.getJSONObject(i).getInt("serviceid"));
-				accArray.put(obj);
-			}
-			catch(JSONException e)
-			{
-				db.errorPrinting(e);
-			}
-
-		}
+		availableVideos = stripAndPrintAttributes(availableVideos, "serviceid", "\t type=video");
 
 
 
 
+		//concatenate all 4 JSON Arrays
+		JSONArray accArray = new JSONArray();
 
-		serviceID = getUserInput("enter serviceID:");
+		accArray = concatJSONArrays(availableIdeas,availablePictures);
 
+		accArray = concatJSONArrays(accArray, availableEvents);
 
-		while(!isValidIdChoice(accArray, serviceID, "serviceID"))
-		{
-			System.out.println("invalid service choice, try again:");
-			serviceID = getUserInput("enter serviceID:");
-		}
-
-
-		//choose a circle
-
-
-		accArray = new JSONArray();
+		accArray = concatJSONArrays(accArray, availableVideos);
 
 
 
+		// get serviceID from user
+		serviceID = getIdChoice(accArray, "serviceid");
 
+		
 
-		System.out.println("=======================================================================");
+		//choose a circle ------------------------------------------------------------------------------------
 
-		System.out.println("Choose a circle to post to:");
+		displayChoiceMessage("Choose a circle to post into:");
 
 		
 		sql = ("select * FROM friendgroup INNER JOIN partof ON friendgroup.groupID = partof.groupID WHERE memberID=" + memberID);
@@ -331,25 +309,9 @@ public class Bookface {
 
 		JSONArray availableGroups = db.executeSelectSql(sql);
 
-		for(int i = 0; i<availableGroups.length(); i++)
-		{
-			
+		availableGroups = stripAndPrintAttributes(availableGroups, "circleid", "\t type=group");
 
-			try{
-
-				System.out.println("circleID=" + availableGroups.getJSONObject(i).getInt("circleid") + "\t" + "type=group" +"\t" + "groupName=" + availableGroups.getJSONObject(i).getString("name"));
-
-				JSONObject obj = new JSONObject();
-				obj.put("circleID",availableGroups.getJSONObject(i).getInt("circleid"));
-				accArray.put(obj);
-			}
-			catch(JSONException e)
-			{
-				db.errorPrinting(e);
-			}
-
-
-		}
+		
 
 		
 
@@ -358,56 +320,37 @@ public class Bookface {
 
 		JSONArray availableLists = db.executeSelectSql(sql);
 
-		for(int i = 0; i<availableLists.length(); i++)
-		{
-			
-			try{
+		availableLists = stripAndPrintAttributes(availableLists, "circleid", "\t type=friendlist");
 
-				System.out.println("circleID=" + availableLists.getJSONObject(i).getInt("circleid") + "\t" + "type=friendlist");
+		
+		//concatenate all 2 json arrays
+		accArray = new JSONArray();
 
-				JSONObject obj = new JSONObject();
+		accArray = concatJSONArrays(availableGroups, availableLists);
 
-				obj.put("circleID",availableLists.getJSONObject(i).getInt("circleid"));
-				accArray.put(obj);
 
-			}
-			catch(JSONException e)
-			{
-				db.errorPrinting(e);
-			}
-
-		}
+		//get circleID from user
+		circleID = getIdChoice(accArray, "circleid");
 
 
 
-		circleID = getUserInput("enter circleID:");
-
-
-
-		while(!isValidIdChoice(accArray, circleID, "circleID"))
-		{
-			System.out.println("invalid circle choice, try again:");
-			circleID = getUserInput("enter circleID:");
-		}
-
-		//get postID
+		//get postID-----------------------------------------------------------
 
 		postID = generateUniqueID("post", "postid");
 
-		//post it
+		
+
+
+
+
+		//make post ------------------------------------------------------------
 
 		sql = ("INSERT INTO POST (postid, circleid, memberid, serviceid) VALUES("+postID+ ","+circleID+","+memberID+","+serviceID +");");
 
 		db.executeInsertSql(sql);
 
-		System.out.println("post added successfully");
 
-		
-
-
-		
-
-
+		System.out.println("\n++++++++++++++++++++++++\npost added successfully\n++++++++++++++++++++++++");
 
 	}
 
@@ -456,7 +399,7 @@ public class Bookface {
 			// if choice is exit, then exit
 			if(userChoice == 6)
 			{
-				System.out.println("Bye!\n\n\n");
+				System.out.println("Bye!\n");
 				break;
 			}
 
@@ -479,7 +422,7 @@ public class Bookface {
 						break;
 			}
 
-			System.out.println("\n\n______________________________________");
+			System.out.println("\n______________________________________");
 
 
 		}
