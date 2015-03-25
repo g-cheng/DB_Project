@@ -1,6 +1,10 @@
 import java.sql.*; // for standard JDBC programs
 import java.util.Properties;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class DB {
 
 	private String url = "jdbc:postgresql://localhost/deliverable3";
@@ -37,58 +41,107 @@ public class DB {
 		return c;
 	}
 
-	private ResultSet query(String query) {
-	    // System.out.println(query);
-	    Statement stmt = null;
-    	ResultSet rs = null;
-    	int rowCount = 0;
+	public JSONArray executeSelectSql(String sql) {
+		Statement stmt = null;
+		ResultSet rs = null;
+		JSONArray result = new JSONArray();
 		try {
-	      stmt = this.c.createStatement();
-	      rs = stmt.executeQuery(query);
-	    } catch (SQLException e) {
-	      e.printStackTrace();
-	    }
-	    return rs;
+			stmt = c.createStatement();
+			rs = stmt.executeQuery(sql);
+			result = convert(rs);
+			stmt.close();
+		} catch (Exception e) {
+			errorPrinting(e);
+		}
+		return result;
+	}
+
+	public void executeInsertSql(String sql) {
+		Statement stmt = null;
+		try {
+			stmt = c.createStatement();
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
+			errorPrinting(e);
+		}
+	}
+
+	private JSONArray convert(ResultSet rs) throws SQLException, JSONException {
+		JSONArray json = new JSONArray();
+		ResultSetMetaData rsmd = rs.getMetaData();
+
+		while (rs.next()) {
+			int numColumns = rsmd.getColumnCount();
+			JSONObject obj = new JSONObject();
+
+			for (int i = 1; i < numColumns + 1; i++) {
+				String column_name = rsmd.getColumnName(i);
+
+				if (rsmd.getColumnType(i) == java.sql.Types.ARRAY) {
+					obj.put(column_name, rs.getArray(column_name));
+				} else if (rsmd.getColumnType(i) == java.sql.Types.BOOLEAN) {
+					obj.put(column_name, rs.getBoolean(column_name));
+				} else if (rsmd.getColumnType(i) == java.sql.Types.DOUBLE) {
+					obj.put(column_name, rs.getDouble(column_name));
+				} else if (rsmd.getColumnType(i) == java.sql.Types.FLOAT) {
+					obj.put(column_name, rs.getFloat(column_name));
+				} else if (rsmd.getColumnType(i) == java.sql.Types.INTEGER) {
+					obj.put(column_name, rs.getInt(column_name));
+				} else if (rsmd.getColumnType(i) == java.sql.Types.VARCHAR) {
+					obj.put(column_name, rs.getString(column_name));
+				} else if (rsmd.getColumnType(i) == java.sql.Types.DATE) {
+					obj.put(column_name, rs.getDate(column_name));
+				} else if (rsmd.getColumnType(i) == java.sql.Types.TIMESTAMP) {
+					obj.put(column_name, rs.getTimestamp(column_name));
+				} else {
+					obj.put(column_name, rs.getObject(column_name));
+				}
+			}
+			json.put(obj);
+		}
+		return json;
+	}
+	
+	private void errorPrinting(Exception e) {
+		System.err.println(e.getClass().getName() + ": " + e.getMessage());
+		System.exit(0);
 	}
 
 	private int getLargestId(String table, String primaryIdHeader) {
-		ResultSet result = query("SELECT " + primaryIdHeader + " FROM " + table + " WHERE " + primaryIdHeader + " = (SELECT MAX(" + primaryIdHeader + ") FROM " + table + ")");
+		JSONArray result = executeSelectSql("SELECT " + primaryIdHeader + " FROM " + table + " WHERE " + primaryIdHeader + " = (SELECT MAX(" + primaryIdHeader + ") FROM " + table + ")");
 		int largestId = 1;
-		try {
-			// get the number of rows from the result set
-		    result.next();
-			largestId = result.getInt(1);
-	    } catch (SQLException e) {
-	    	e.printStackTrace();
-	    }
+		if (result.length() > 0) {
+			try {
+				largestId = result.getJSONObject(0).getInt(primaryIdHeader);
+			} catch (JSONException e) {
+				errorPrinting(e);
+			}
+		}
 		return largestId;	
 	}
 
 	private boolean checkMemberExist(String memberName) {
-		ResultSet result = query("SELECT COUNT(*) FROM member WHERE name=" + "'" + memberName + "'");
-		int rowCount = 0;
-		try {
-			// get the number of rows from the result set
-		    result.next();
-			rowCount = result.getInt(1);
-	    } catch (SQLException e) {
-	    	e.printStackTrace();
-	    }
-		if (rowCount > 0) return true;
+		JSONArray result = executeSelectSql("SELECT COUNT(*) FROM member WHERE name=" + "'" + memberName + "'");
+
+		if (result.length() > 0) {
+			for (int i = 0; i < result.length(); i++) {
+				try {
+					int count = result.getJSONObject(0).getInt("count");
+					if (count > 0) return true;
+				} catch (JSONException e) {
+					errorPrinting(e);
+				}
+			}
+		}
 	    return false;
 	}
 
 	private boolean checkMemberExist(int memberId) {
-		ResultSet result = query("SELECT COUNT(*) FROM member WHERE name=" + "'" + memberId + "'");
-		int rowCount = 0;
-		try {
-			// get the number of rows from the result set
-		    result.next();
-			rowCount = result.getInt(1);
-	    } catch (SQLException e) {
-	    	e.printStackTrace();
-	    }
-		if (rowCount > 0) return true;
+		JSONArray result = executeSelectSql("SELECT COUNT(*) FROM member WHERE name=" + "'" + memberId + "'");
+		if (result.length() > 0) {
+
+		}
 	    return false;
 	}
 
@@ -99,10 +152,8 @@ public class DB {
 			return;	
 		}
 		int newId = getLargestId("member", "memberId") + 1;
-		String queryInput = "INSERT INTO member (memberID, name, email, password) VALUES (" + newId + ", '" + memberName + "', '" + email + "', '" + password + "')";
-		query(queryInput);
-
-		System.out.println("Member, you have been registered successfully, you can now login, welcome to bookface!");	
+		executeInsertSql("INSERT INTO member (memberID, name, email, password) VALUES (" + newId + ", '" + memberName + "', '" + email + "', '" + password + "')");
+		System.out.println("Member, you have been registered successfully, you can now login, welcome to Bookface!");	
 	}
 
 	public void addFriend(String memberName, String friendAddedName) {
@@ -125,7 +176,7 @@ public class DB {
 	}
 
 	public static void main(String[] args) {
-		DB myDB = new DB();
-		myDB.registerMember("helllllloooooo", "myemail@gmail.com", "blablblaba");
+		DB db = new DB();
+		db.registerMember("Helloooooooooo", "hellohello@gmail.com", "blablabal");
 	}
 }
