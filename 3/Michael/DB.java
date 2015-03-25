@@ -7,8 +7,8 @@ import org.json.JSONObject;
 
 public class DB {
 
-	private String url = "jdbc:postgresql://localhost/deliverable3";
-	private String username = "group46";
+	private String url = "jdbc:postgresql://localhost/project";
+	private String username = "postgres";
 	private String password = "root";
 	private Connection c = null;
 
@@ -145,30 +145,32 @@ public class DB {
 	    return false;
 	}
 
-	private void registerMember(String memberName, String email, String password) {
+	private boolean registerMember(String memberName, String email, String password) {
 		// Check if member already exists
 		if (checkMemberExist(memberName)) {
 			System.out.println("Error, your name already exists in the database, please use a different name");
-			return;	
+			return false;	
 		}
 		int newId = getLargestId("member", "memberId") + 1;
 		executeInsertSql("INSERT INTO member (memberID, name, email, password) VALUES (" + newId + ", '" + memberName + "', '" + email + "', '" + password + "')");
-		System.out.println("Member, you have been registered successfully, you can now login, welcome to Bookface!");	
+		System.out.println("Success, " + memberName + " have been registered, you can now login, welcome to Bookface!");	
+		return true;
 	}
 
 	public void addFriend(String memberName, String friendAddedName) {
-		System.out.println("Error, member not found");
-		System.out.println("Friend successfully added to your friendlist");
+		System.out.println("Error, " + friendAddedName + " not found in the database");
+		System.out.println("Error, " + friendAddedName + " is already in your friendlist!");
+		System.out.println(friendAddedName + " successfully added to your friendlist");
 	}
 
 	public void removeFriend(String memberName, String friendRemovedName) {
-		System.out.println("Error, friend is not on your friendlist");
-		System.out.println("Friend successfully removed from your friendlist");
+		System.out.println("Error, " + friendRemovedName + " is not in your friendlist");
+		System.out.println("Success, " + friendRemovedName + " successfully removed from your friendlist");
 	}
 
 	public void sendMessage(String memberName, String destinationMemberName, String message) {
 		System.out.println("Error, destination member name does not exists");
-		System.out.println("Message successfully sent to member");
+		System.out.println("Success, message sent to " + destinationMemberName);
 	}
 
 	public void showFriendList(String memberName) {

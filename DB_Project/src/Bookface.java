@@ -20,9 +20,9 @@ public class Bookface {
 	}
 
 	//keeps on asking user for input until user inputs an int
-	private static int getUserChoice(String promptMessage){
+	private static int promptUserChoice(String promptMessage){
 		while (true) {
-			System.out.println(promptMessage);
+			System.out.print(promptMessage);
 			Scanner userIn = new Scanner(System.in);
 			int userChoice;
 			try {
@@ -36,9 +36,21 @@ public class Bookface {
 		}
 	}
 
+	private static String promptUserInput(String promptMessage){
+		System.out.print(promptMessage);
+		Scanner userIn = new Scanner(System.in);
+		String userInput = null;
+		try {
+			userInput = userIn.next();
+		} catch (Exception e) {
+			db.errorPrinting(e);
+		}
+		return userInput;
+	}
+
 	//validate menu choice (has to be between 1 and 8)
 	private static boolean isValidMenuChoice(int choice) {
-		if (choice > 8 || choice < 1) return false;
+		if (choice > 9 || choice < 1) return false;
 		return true;
 	}
 
@@ -48,7 +60,7 @@ public class Bookface {
 	//output:
 	// - returns (the maximum ID that exist in the table currently incremented by 1)
 	private static int generateUniqueID(String tableName, String pkName) {
-		int uniqueID=-1;
+		int uniqueID =- 1;
 		try {
 			 uniqueID = db.executeSelectSql("select " +pkName+  " from " + tableName + " where " + pkName + "=(select max(" + pkName + ") from " + tableName +")").getJSONObject(0).getInt(pkName) + 1;
 		} catch(JSONException e) {
@@ -61,7 +73,7 @@ public class Bookface {
 	//checks if the id choosen can be found inside the jsonarray under attribute pkName
 	private static boolean isValidIdChoice(JSONArray arr, int id, String pkName) {
 		boolean result=false;
-		for (int i=0; i < arr.length(); i++) {
+		for (int i = 0; i < arr.length(); i++) {
 			try {
 				if (arr.getJSONObject(i).getInt(pkName)==id) {
 					result = true;
@@ -81,7 +93,7 @@ public class Bookface {
 	//prints out each row of the array and strips out the useless info
 	private static JSONArray stripAndPrintAttributes(JSONArray inputArray, String pkName, String additionalMessage) {
 		JSONArray outputArray = new JSONArray();
-		for (int i = 0; i<inputArray.length(); i++) {
+		for (int i = 0; i < inputArray.length(); i++) {
 			try {	
 				System.out.println(pkName+"="+inputArray.getJSONObject(i).getInt(pkName) +"\t"+ additionalMessage);
 				JSONObject obj = new JSONObject();
@@ -97,10 +109,10 @@ public class Bookface {
 	//ask for user to input a valid id choice until the inputed choice is valid, i.e it exists in the jsonarray
 	private static int getIdChoice(JSONArray inputArray, String pkName) {	
 		int chosenID;
-		chosenID = getUserChoice("enter " + pkName +":");
+		chosenID = promptUserChoice("enter " + pkName +":");
 		while (!isValidIdChoice(inputArray, chosenID, pkName)) {
 			System.out.println("invalid " + pkName + " choice, try again:");
-			chosenID= getUserChoice("enter "+ pkName +":");
+			chosenID= promptUserChoice("enter "+ pkName +":");
 		}
 		return chosenID;
 	}
@@ -117,7 +129,11 @@ public class Bookface {
 		return a2;
 	}
 
+	// LOGIN
 	public static void choice1(){
+		// String username = promptUserInput("Username: ");
+		// String password = promptUserInput("Password: ");
+		// user = db.login(username, password);
 		user = db.login("Joshua", "DMe2t7eyL");
 		if (user == null) {
 			System.out.println("Unable to login, please try again with a correct name and password combination");
@@ -126,10 +142,13 @@ public class Bookface {
 		}
 	}
 
+	// REGISTER
 	public static void choice2(){
-		;
+		// String username = promptUserInput("Username: ");
+		// String password = promptUserInput("Password: ");
 	}
 
+	// POST
 	public static void choice3(){
 		int serviceID;
 		int postID;
@@ -137,7 +156,7 @@ public class Bookface {
 		int memberID;
 
 		//choose a member-----------------------------------------------------------------
-		displayChoiceMessage("Choose a member with content available to post from the list:");
+		displayChoiceMessage("Choose a member with content available to post from the list: ");
 		String sql = ("SELECT DISTINCT memberID FROM (SELECT memberID FROM idea union SELECT memberID FROM picture union SELECT memberID from event union SELECT memberID from video) as res1;");
 		JSONArray membersWithContent = db.executeSelectSql(sql);
 		membersWithContent = stripAndPrintAttributes(membersWithContent, "memberid", "");
@@ -145,7 +164,7 @@ public class Bookface {
 		
 		// choose a service-----------------------------------------------------------------
 
-		displayChoiceMessage("Choose a service to post:");		
+		displayChoiceMessage("Choose a service to post: ");		
 		sql = ("SELECT serviceID FROM idea WHERE memberID="+memberID+";");
 		JSONArray availableIdeas = db.executeSelectSql(sql);
 		availableIdeas = stripAndPrintAttributes(availableIdeas, "serviceid", "\t type=idea");
@@ -169,7 +188,7 @@ public class Bookface {
 		serviceID = getIdChoice(accArray, "serviceid");
 
 		//choose a circle ------------------------------------------------------------------------------------
-		displayChoiceMessage("Choose a circle to post into:");
+		displayChoiceMessage("Choose a circle to post into: ");
 		sql = ("select * FROM friendgroup INNER JOIN partof ON friendgroup.groupID = partof.groupID WHERE memberID=" + memberID);
 		JSONArray availableGroups = db.executeSelectSql(sql);
 		availableGroups = stripAndPrintAttributes(availableGroups, "circleid", "\t type=group");
@@ -194,19 +213,28 @@ public class Bookface {
 		System.out.println("\n++++++++++++++++++++++++\npost added successfully\n++++++++++++++++++++++++");
 	}
 
+	// MESSAGE
 	public static void choice4(){
 		;
 	}
 
+	// JOIN GROUP
 	public static void choice5(){
 		;
 	}
 
+	// LIST FRIENDS
 	public static void choice6(){
 		;
 	}
 
+	// ADD FRIEND
 	public static void choice7(){
+		;
+	}
+
+	// REMOVE FRIEND
+	public static void choice8(){
 		;
 	}
 
@@ -217,22 +245,23 @@ public class Bookface {
 		System.out.println("3. POST an existant IDEA, PICTURE, VIDEO or EVENT created by a member to one of his/her circles");
 		System.out.println("4. MESSAGE another member");
 		System.out.println("5. JOIN a group");
-		System.out.println("6. ADD a friend");
-		System.out.println("7. REMOVE a friend");
-		System.out.println("8. EXIT");
+		System.out.println("6. LIST my friends");
+		System.out.println("7. ADD a friend");
+		System.out.println("8. REMOVE a friend");
+		System.out.println("9. EXIT");
 	}
 
 	private static void startInterface(){
 		while(true) {
 			Bookface.displayMenu();
 			int userChoice;
-			userChoice = Bookface.getUserChoice("Enter choice number:");
+			userChoice = Bookface.promptUserChoice("Enter choice number: ");
 			System.out.println("______________________________________\n\n");
 			if (!isValidMenuChoice(userChoice)) {
 				System.out.println("Choice is invalid, please try again\n");
 				System.out.println("______________________________________");
 				continue;
-			} else if (userChoice == 8) {
+			} else if (userChoice == 9) {
 				System.out.println("Bye!");
 				break;
 			} else if (userChoice > 2 && !isUserConnected()) {

@@ -60,7 +60,6 @@ public class DB {
 				int memberID = entry.getInt("memberid");
 				String email = entry.getString("email");
 				currentUser = new User(memberID, name, email);
-
 			} catch (JSONException e) {
 				errorPrinting(e);
 			}
