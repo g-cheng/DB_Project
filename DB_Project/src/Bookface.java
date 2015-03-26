@@ -51,7 +51,7 @@ public class Bookface {
 
 	// validate menu choice (has to be between 1 and 8)
 	private static boolean isValidMenuChoice(int choice) {
-		if (choice > 9 || choice < 1)
+		if (choice > 11 || choice < 1)
 			return false;
 		return true;
 	}
@@ -145,21 +145,31 @@ public class Bookface {
 
 	// LOGIN
 	public static void choice1() {
-		// String username = promptUserInput("Username: ");
-		// String password = promptUserInput("Password: ");
-		// user = db.login(username, password);
-		user = db.login("Joshua", "DMe2t7eyL");
+		String username = promptUserInput("Username: ");
+		String password = promptUserInput("Password: ");
+		user = db.login(username, password);
+		// user = db.login("George", "fkQWGTswL");
 		if (user == null) {
-			System.out.println("Unable to login, please try again with a correct name and password combination");
+			System.out.println("\n>.< Error, unable to login, please try again with a correct name and password combination");
 		} else {
-			System.out.println("Login successful! Welcome " + user.getName());
+			System.out.println("\n:D Login successful! Welcome " + user.getName());
 		}
 	}
 
 	// REGISTER
 	public static void choice2() {
-		// String username = promptUserInput("Username: ");
-		// String password = promptUserInput("Password: ");
+		String username = promptUserInput("Enter username: ");
+		String email = promptUserInput("Enter email: ");
+		String password = promptUserInput("Enter password: ");
+		String password2 = promptUserInput("Enter password again: ");
+		if (db.checkMemberExist(username)) {
+			System.out.println("\n>.< Error, username already taken");
+			return;
+		} else if (!password.equals(password2)) {
+			System.out.println("\n>.< Error, password does not match");
+			return;
+		}
+		db.registerMember(username, email, password);
 	}
 
 	// POST
@@ -242,7 +252,9 @@ public class Bookface {
 
 	// MESSAGE
 	public static void choice4() {
-		;
+		String destName = promptUserInput("Enter destination username: ");
+		String message = promptUserInput("Enter message content: ");
+		db.sendMessage(user.getID(), user.getName(), destName, message);
 	}
 
 	// JOIN GROUP
@@ -263,17 +275,29 @@ public class Bookface {
 
 	// LIST FRIENDS
 	public static void choice6() {
-		;
+		db.showFriendList(user.getID());
 	}
 
 	// ADD FRIEND
 	public static void choice7() {
-		;
+		String friendName = promptUserInput("Enter username of friend to add: ");
+		db.addFriend(user.getID(), user.getName(), friendName);
 	}
 
 	// REMOVE FRIEND
 	public static void choice8() {
-		;
+		String friendName = promptUserInput("Enter username of friend to remove: ");
+		db.removeFriend(user.getID(), user.getName(), friendName);
+	}
+
+	// SHOW ALL MESSAGES SENT
+	public static void choice9() {
+		db.showMsgSent(user.getID());
+	}
+
+	// SHOW ALL MESSAGES RECEIVED
+	public static void choice10() {
+		db.showMsgReceived(user.getID());
 	}
 
 	private static void displayMenu() {
@@ -287,7 +311,9 @@ public class Bookface {
 		System.out.println("6. LIST my friends");
 		System.out.println("7. ADD a friend");
 		System.out.println("8. REMOVE a friend");
-		System.out.println("9. EXIT");
+		System.out.println("9. SHOW all messages sent");
+		System.out.println("10. SHOW all messages received");
+		System.out.println("11. EXIT");
 	}
 
 	private static void startInterface() {
@@ -300,7 +326,7 @@ public class Bookface {
 				System.out.println("Choice is invalid, please try again\n");
 				System.out.println("______________________________________");
 				continue;
-			} else if (userChoice == 9) {
+			} else if (userChoice == 11) {
 				db.closeConnection();
 				System.out.println("Bye!");
 				break;
@@ -330,6 +356,15 @@ public class Bookface {
 				break;
 			case 7:
 				choice7();
+				break;
+			case 8:
+				choice8();
+				break;
+			case 9:
+				choice9();
+				break;
+			case 10:
+				choice10();
 				break;
 			}
 			System.out.println("\n\n______________________________________");
