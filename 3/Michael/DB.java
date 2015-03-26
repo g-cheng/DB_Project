@@ -137,7 +137,7 @@ public class DB {
 	}
 
 	private boolean checkMemberExist(int memberId) {
-		JSONArray result = executeSelectSql("SELECT COUNT(*) FROM member WHERE name=" + "'" + memberId + "'");
+		JSONArray result = executeSelectSql("SELECT COUNT(*) FROM member WHERE memberid=" + "'" + memberId + "'");
 		if (result.length() > 0) {
 			for (int i = 0; i < result.length(); i++) {
 				try {
@@ -166,6 +166,12 @@ public class DB {
 
 	private JSONArray getFriendList(int memberid) {
 		JSONArray result = executeSelectSql("SELECT m.memberid, m.name FROM member m INNER JOIN (SELECT memberid FROM contains WHERE friendlistid = (SELECT friendlistid FROM friendlist WHERE memberid = " + memberid + ")) f ON m.memberid = f.memberid;");
+		return result;
+	}
+
+	private JSONArray getMsgSentList(int memberid) {
+		JSONArray result = executeSelectSql("SELECT f.name, l.senderid, l.memberid, l.messageid, l.content, l.sentat, l.receivedat FROM member f INNER JOIN (SELECT m.messageid, r.memberid, m.senderid, m.content, m.sentat, m.receivedat FROM message m INNER JOIN (SELECT * FROM receive WHERE memberid=" + memberid + ") r ON m.messageid=r.messageid) l ON l.senderid=f.memberid;");
+		System.out.println(result.length());
 		return result;
 	}
 
@@ -272,11 +278,27 @@ public class DB {
 		}
 	}
 
+	public void showMessagesReceived(int memberid) {
+		JSONArray result = getMsgSentList(memberid);
+		System.out.println("From |" + " Received At " + "| Content");		
+		for (int i = 0; i < result.length(); i++) {
+			try {
+				String name = result.getJSONObject(i).getString("name");
+				String receivedat = result.getJSONObject(i).getTimestamp("receivedat");
+				String content = result.getJSONObject(i).getString("content");
+				System.out.println(name + " " + receivedat + " " + content);			
+			} catch (JSONException e) {
+				errorPrinting(e);
+			}
+		}
+	}
+
 	public static void main(String[] args) {
 		DB db = new DB();
 		// db.addFriend(44, "George", "Laura");
 		// db.removeFriend(44, "George", "Laura");
 		db.sendMessage(44, "George", "Laura", "Hey, how are you doing?");
 		db.showFriendList(44);
+		db.showMessagesReceived(28);
 	}
 }
