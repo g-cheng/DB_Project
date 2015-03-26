@@ -204,6 +204,18 @@ public class DB {
 		return 0;
 	}
 
+	private int createCircle() {
+		int newId = getLargestId("circle", "circleid") + 1;
+		executeInsertSql("INSERT INTO circle (circleID) VALUES ("+ newId+");");
+		return newId;
+	}
+
+	private void createUserFriendList(int memberid) {
+		int circleId = createCircle();
+		int newId = getLargestId("friendlist", "friendlistid") + 1;
+		executeInsertSql("INSERT INTO friendlist (circleID, friendListID, memberID) VALUES(" + circleId +"," + newId +"," +memberid+");");
+	}
+
 	public void registerMember(String memberName, String email, String password) {
 		// Check if member already exists
 		if (checkMemberExist(memberName)) {
@@ -212,6 +224,7 @@ public class DB {
 		}
 		int newId = getLargestId("member", "memberid") + 1;
 		executeInsertSql("INSERT INTO member (memberID, name, email, password) VALUES (" + String.valueOf(newId) + ", '" + memberName + "', '" + email + "', '" + password + "')");
+		createUserFriendList(newId);
 		System.out.println("\n:D Success, " + memberName + " have been registered. Welcome to Bookface! You can now login");	
 	}
 
