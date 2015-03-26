@@ -14,7 +14,7 @@ CREATE TABLE message (
     senderID int not null,
     content varchar(1000),
     sentAt timestamp DEFAULT CURRENT_TIMESTAMP,
-    receivedAt timestamp
+    receivedAt timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 -- InstantMessages(imID, characterLength, messageID)
