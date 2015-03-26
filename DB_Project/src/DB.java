@@ -5,6 +5,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+import java.util.List;
+
+import com.bethecoder.ascii_table.impl.CollectionASCIITableAware;
+import com.bethecoder.ascii_table.impl.JDBCASCIITableAware;
+import com.bethecoder.ascii_table.spec.IASCIITableAware;
+import com.bethecoder.ascii_table.ASCIITable;
+import com.bethecoder.ascii_table.ASCIITableHeader;
+
 public class DB {
 
 	private String url = "jdbc:postgresql://localhost/project";

@@ -5,6 +5,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+import java.util.List;
+
+import com.bethecoder.ascii_table.impl.CollectionASCIITableAware;
+import com.bethecoder.ascii_table.impl.JDBCASCIITableAware;
+import com.bethecoder.ascii_table.spec.IASCIITableAware;
+import com.bethecoder.ascii_table.ASCIITable;
+import com.bethecoder.ascii_table.ASCIITableHeader;
+
 public class DB {
 
 	private String url = "jdbc:postgresql://localhost/project";
@@ -266,38 +275,49 @@ public class DB {
 
 	public void showFriendList(int memberid) {
 		JSONArray result = getFriendList(memberid);
-		System.out.println("ID | " + "name");		
+		ASCIITableHeader[] header = {
+    		new ASCIITableHeader("ID", ASCIITable.ALIGN_LEFT),
+    		new ASCIITableHeader("Name", ASCIITable.ALIGN_LEFT),
+	    };
+		String[][] table = new String[result.length()][];
 		for (int i = 0; i < result.length(); i++) {
 			try {
 				int friendid = result.getJSONObject(i).getInt("memberid");
 				String name = result.getJSONObject(i).getString("name");
-				System.out.println(friendid + " " + name);			
+				table[i] = new String[] { String.valueOf(friendid), name };		
 			} catch (JSONException e) {
 				errorPrinting(e);
 			}
 		}
+		ASCIITable.getInstance().printTable(header, table);
 	}
 
 	public void showMessagesReceived(int memberid) {
 		JSONArray result = getMsgSentList(memberid);
-		System.out.println("From |" + " Received At " + "| Content");		
+	    ASCIITableHeader[] header = {
+	    		new ASCIITableHeader("From", ASCIITable.ALIGN_LEFT),
+	    		new ASCIITableHeader("Content", ASCIITable.ALIGN_LEFT),
+	    		new ASCIITableHeader("Received at", ASCIITable.ALIGN_LEFT)
+	    };
+		String[][] table = new String[result.length()][];
 		for (int i = 0; i < result.length(); i++) {
 			try {
 				String name = result.getJSONObject(i).getString("name");
-				String receivedat = result.getJSONObject(i).getTimestamp("receivedat");
+				String receivedat = result.getJSONObject(i).get("receivedat").toString();
 				String content = result.getJSONObject(i).getString("content");
-				System.out.println(name + " " + receivedat + " " + content);			
+				table[i] = new String[] { name, content, receivedat };
 			} catch (JSONException e) {
 				errorPrinting(e);
 			}
 		}
+		ASCIITable.getInstance().printTable(header, table);
 	}
 
 	public static void main(String[] args) {
 		DB db = new DB();
 		// db.addFriend(44, "George", "Laura");
 		// db.removeFriend(44, "George", "Laura");
-		db.sendMessage(44, "George", "Laura", "Hey, how are you doing?");
+		// db.sendMessage(44, "George", "Laura", "Hey, how are you doing?");
 		db.showFriendList(44);
 		db.showMessagesReceived(28);
 	}
