@@ -41,7 +41,7 @@ public class DB {
 		return c;
 	}
 
-	private void closeConnection() {
+	public void closeConnection() {
 		try {
 			c.close();
 		} catch (SQLException e) {
