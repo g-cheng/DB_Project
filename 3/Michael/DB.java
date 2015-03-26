@@ -201,12 +201,12 @@ public class DB {
 		}
 		int newId = getLargestId("member", "memberid") + 1;
 		executeInsertSql("INSERT INTO member (memberID, name, email, password) VALUES (" + String.valueOf(newId) + ", '" + memberName + "', '" + email + "', '" + password + "')");
-		System.out.println("Success, " + memberName + " have been registered, you can now login, welcome to Bookface!");	
+		System.out.println("Success, " + memberName + " have been registered, you can now login, welcome to Bookface! You can now login");	
 	}
 
 	public void addFriend(int memberid, String memberName, String friendName) {
 		// Check if memberName and friendName exists
-		if (!checkMemberExist(memberName)) {
+		if (!checkMemberExist(memberid)) {
 			System.out.println("Error, " + memberName + " does not exist in the database");
 			return;	
 		} else if (!checkMemberExist(friendName)) {
@@ -218,14 +218,14 @@ public class DB {
 		}
 		// Add to friendlist
 		int friendId = getMemberId(friendName);
-		int friendListId = getFriendListId(friendId);
-		db.executeInsertSql("INSERT INTO contains (friendListID, memberID) VALUES (" + Integer.toString(friendListId) + ", " + Integer.toString(friendId) + ")");
-		System.out.println(friendName + " successfully added to your friendlist");
+		int friendListId = getFriendListId(memberid);
+		executeInsertSql("INSERT INTO contains (friendListID, memberID) VALUES (" + friendListId + ", " + friendId + ")");
+		System.out.println("Success, " + friendName + " added to your friendlist");
 	}
 
 	public void removeFriend(int memberid, String memberName, String friendName) {
 		// Check if memberName and friendName exists
-		if (!checkMemberExist(memberName)) {
+		if (!checkMemberExist(memberid)) {
 			System.out.println("Error, " + memberName + " does not exist in the database");
 			return;	
 		} else if (!checkMemberExist(friendName)) {
@@ -237,14 +237,25 @@ public class DB {
 		}
 		// Remove from friendlist
 		int friendId = getMemberId(friendName);
-
-
+		int friendListId = getFriendListId(memberid);
+		executeInsertSql("DELETE FROM contains WHERE memberid=" + friendId + " AND friendlistid=" + friendListId); // ORDER MATTERS ?!!?!?
 		System.out.println("Success, " + friendName + " successfully removed from your friendlist");
 	}
 
-	public void sendMessage(int memberid, String memberName, String destinationMemberName, String message) {
-		System.out.println("Error, destination member name does not exists");
-		System.out.println("Success, message sent to " + destinationMemberName);
+	public void sendMessage(int memberid, String memberName, String destName, String message) {
+		// Check if memberName and destName exists
+		if (!checkMemberExist(memberid)) {
+			System.out.println("Error, " + memberName + " does not exist in the database");
+			return;	
+		} else if (!checkMemberExist(destName)) {
+			System.out.println("Error, " + destName + " does not exist in the database");
+			return;	
+		} 
+		int destId = getMemberId(destName);
+		int newMsgId = getLargestId("message", "messageid") + 1;
+		executeInsertSql("INSERT INTO message (messageID, senderID, content) VALUES (" + newMsgId + ", " + memberid + ", '"+ message +"')");
+		executeInsertSql("INSERT INTO receive (messageID, memberID) VALUES (" + newMsgId + ", " + destId + ")");
+		System.out.println("Success, message sent to " + destName);
 	}
 
 	public void showFriendList(int memberid) {
@@ -263,6 +274,9 @@ public class DB {
 
 	public static void main(String[] args) {
 		DB db = new DB();
+		// db.addFriend(44, "George", "Laura");
+		// db.removeFriend(44, "George", "Laura");
+		db.sendMessage(44, "George", "Laura", "Hey, how are you doing?");
 		db.showFriendList(44);
 	}
 }
