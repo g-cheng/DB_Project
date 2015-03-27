@@ -16,7 +16,7 @@ import com.bethecoder.ascii_table.ASCIITableHeader;
 
 public class DB {
 
-	private String url = "jdbc:postgresql://localhost/project";
+	private String url = "jdbc:postgresql://michaelchum.com:5432/project";
 	private String username = "postgres";
 	private String password = "root";
 	private Connection c = null;
