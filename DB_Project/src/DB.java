@@ -341,15 +341,18 @@ public class DB {
 	    ASCIITableHeader[] header = {
 	    		new ASCIITableHeader("From", ASCIITable.ALIGN_LEFT),
 	    		new ASCIITableHeader("Content", ASCIITable.ALIGN_LEFT),
-	    		new ASCIITableHeader("Received at", ASCIITable.ALIGN_LEFT)
+	    		//new ASCIITableHeader("Received at", ASCIITable.ALIGN_LEFT)
+	    		new ASCIITableHeader("Sent at", ASCIITable.ALIGN_LEFT) //add by brian
 	    };
 		String[][] table = new String[result.length()][];
 		for (int i = 0; i < result.length(); i++) {
 			try {
 				String name = result.getJSONObject(i).getString("name");
-				String receivedat = result.getJSONObject(i).get("receivedat").toString();
+				//String receivedat = result.getJSONObject(i).get("receivedat").toString();
 				String content = result.getJSONObject(i).getString("content");
-				table[i] = new String[] { name, content, receivedat };
+				String sentat = result.getJSONObject(i).get("sentat").toString(); //added by brian
+				//table[i] = new String[] { name, content, receivedat };
+				table[i] = new String[] { name, content, sentat}; //added by brian
 			} catch (JSONException e) {
 				errorPrinting(e);
 			}
